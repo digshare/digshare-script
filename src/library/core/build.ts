@@ -4,6 +4,7 @@ import * as Path from 'path';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import {nodeResolve} from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 import {rollup} from 'rollup';
 
 export async function build(input: string, out?: string): Promise<void> {
@@ -25,6 +26,10 @@ export async function build(input: string, out?: string): Promise<void> {
         preferBuiltins: true,
       }),
       json(),
+      replace({
+        'process.env.DIGSHARE_API': `'${process.env['DIGSHARE_API']}'`,
+        preventAssignment: true,
+      }),
     ],
   });
 

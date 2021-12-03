@@ -3,7 +3,7 @@ import {ScriptContext} from './context';
 
 export function Script<TPayload>(
   handler: (payload: TPayload, context: ScriptContext) => Promise<any>,
-  baseURL = process.env['DIGSHARE_API'],
+  baseURL = process.env.DIGSHARE_API,
 ): (...args: any) => any {
   if (!baseURL) {
     throw Error('baseURL is required');
