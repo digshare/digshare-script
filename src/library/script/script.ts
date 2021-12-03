@@ -6,7 +6,7 @@ export function Script<TPayload>(
   baseURL = process.env.DIGSHARE_API,
 ): (...args: any) => any {
   if (!baseURL) {
-    throw Error('baseURL is required');
+    throw Error('BaseURL is required');
   }
 
   return async (event, {requestId}, callback) => {

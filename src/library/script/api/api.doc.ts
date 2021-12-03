@@ -13,7 +13,10 @@ export interface Subscriber {
         }[];
         expiresAt: number;
       }
-    | {type: 'per-message'; messages: number}
+    | {
+        type: 'per-message';
+        messages: number;
+      }
     | {
         type: 'vip-free';
       }
@@ -29,9 +32,9 @@ export interface Subscriber {
 
 export interface PublishMessageParams {
   content: string;
-  images: string[] | undefined;
-  requestId: string | undefined;
-  opened: boolean | undefined;
+  images?: string[];
+  requestId?: string;
+  opened?: boolean;
 }
 
 export interface ImageExcerpt {

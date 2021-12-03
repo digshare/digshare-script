@@ -17,5 +17,8 @@ export interface ScriptContext {
    * Open API 地址
    */
   baseURL: string;
+  /**
+   * 频道脚本相关 open api 封装
+   */
   api: ScriptAPI;
 }
