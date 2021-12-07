@@ -1,6 +1,6 @@
-import {ScriptAPI} from './api';
+import {IScriptAPI, IStore} from './api';
 
-export interface ScriptContext {
+export interface ScriptContext<TStore extends IStore> {
   /**
    * 是否是模拟运行
    */
@@ -20,5 +20,5 @@ export interface ScriptContext {
   /**
    * 频道脚本相关 open api 封装
    */
-  api: ScriptAPI;
+  api: IScriptAPI<TStore>;
 }

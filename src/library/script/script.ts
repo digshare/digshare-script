@@ -1,22 +1,37 @@
-import {ScriptAPI} from './api';
+import {DevScriptAPI, IStore, ScriptAPI} from './api';
 import {ScriptContext} from './context';
 
-export function Script<TPayload>(
-  handler: (payload: TPayload, context: ScriptContext) => Promise<any>,
-  baseURL = process.env.DIGSHARE_API,
-): (...args: any) => any {
-  if (!baseURL) {
-    throw Error('BaseURL is required');
-  }
+export type FC<TStore> = (
+  event: Buffer | string,
+  ctx: {
+    requestId: string;
+  },
+  callback: (error: null, result: any) => void,
+  dev?: TStore,
+) => Promise<any>;
 
-  return async (event, {requestId}, callback) => {
+export function script<TStore extends IStore, TPayload = any>(
+  handler: (payload: TPayload, context: ScriptContext<TStore>) => Promise<any>,
+  defaultBaseURL?: string,
+): FC<TStore> {
+  return async (event, {requestId}, callback, dev) => {
     let {payload: payloadJSONString} = JSON.parse(event.toString('utf-8'));
 
-    let {payload, token, dryRun} = JSON.parse(payloadJSONString);
+    let {payload, token, dryRun, baseURL} = JSON.parse(payloadJSONString);
 
-    let api = new ScriptAPI(baseURL, token);
+    baseURL = baseURL || defaultBaseURL || process.env.DIGSHARE_API;
 
-    let context: ScriptContext = {
+    if (!baseURL && !dev) {
+      return callback(null, {
+        error: 'BaseURL is required',
+      });
+    }
+
+    let api = dev
+      ? new DevScriptAPI<TStore>(dev)
+      : new ScriptAPI<TStore>(baseURL, token);
+
+    let context: ScriptContext<TStore> = {
       dryRun,
       requestId,
       token,
@@ -29,7 +44,10 @@ export function Script<TPayload>(
       callback(null, result);
     } catch (error: any) {
       console.error(error);
-      return callback(null, {error: error.message});
+
+      return callback(null, {
+        error: error.message,
+      });
     }
   };
 }

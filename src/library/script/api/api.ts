@@ -4,16 +4,32 @@ import {ScriptStorage} from '../storage';
 
 import {ImageExcerpt, PublishMessageParams, Subscriber} from './api.doc';
 
-export class ScriptAPI {
+export type IStore = Record<string, any>;
+
+export interface IScriptAPI<TStore extends IStore = IStore> {
+  getStorage(): Promise<ScriptStorage<TStore>>;
+  saveStorage(storage: ScriptStorage<TStore>): Promise<void>;
+  publishMessage(params: PublishMessageParams): Promise<void>;
+
+  getSubscribers(params: {
+    after: string | undefined;
+    limit: number;
+  }): Promise<Subscriber[]>;
+
+  getSubscribersIterator(pageSize?: number): AsyncGenerator<Subscriber>;
+  uploadImage(image: string | Buffer | ArrayBuffer): Promise<ImageExcerpt>;
+}
+
+export class ScriptAPI<TStore extends IStore> implements IScriptAPI<TStore> {
   constructor(private baseURL: string, private token: string) {}
 
-  async getStorage<TStore>(): Promise<ScriptStorage<TStore>> {
+  async getStorage(): Promise<ScriptStorage<TStore>> {
     let {storage} = Object(await this.call('/channel-script/get-storage', {}));
 
     return new ScriptStorage(storage);
   }
 
-  async saveStorage<TStore>(storage: ScriptStorage<TStore>): Promise<void> {
+  async saveStorage(storage: ScriptStorage<TStore>): Promise<void> {
     await this.call('/channel-script/set-storage', {
       storage: storage.raw,
     });
@@ -127,5 +143,50 @@ export class ScriptAPI {
 
         return json.value;
       });
+  }
+}
+
+export class DevScriptAPI<TStore extends IStore> implements IScriptAPI<TStore> {
+  constructor(private storage: TStore) {}
+
+  async getStorage(): Promise<ScriptStorage<TStore>> {
+    return new ScriptStorage(this.storage);
+  }
+
+  async saveStorage<TStore>(storage: ScriptStorage<TStore>): Promise<void> {
+    console.info('dev-run: saveStorage', storage);
+  }
+
+  async publishMessage(params: PublishMessageParams): Promise<void> {
+    console.info('dev-run: publishMessage', params);
+  }
+
+  async getSubscribers({
+    after,
+    limit,
+  }: {
+    after: string | undefined;
+    limit: number;
+  }): Promise<Subscriber[]> {
+    console.info('dev-run: getSubscribers', {
+      after,
+      limit,
+    });
+    return [];
+  }
+
+  async *getSubscribersIterator(pageSize = 200): AsyncGenerator<Subscriber> {
+    console.info('dev-run: getSubscribers', {pageSize});
+  }
+
+  async uploadImage(
+    _image: string | Buffer | ArrayBuffer,
+  ): Promise<ImageExcerpt> {
+    return {
+      id: String(Math.random()),
+      url: 'http://dev.dss.com',
+      width: 1920,
+      height: 1080,
+    };
   }
 }
