@@ -1,6 +1,6 @@
 {
   "name": "dss-sdk",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "license": "MIT",
   "author": "Chengdu Mufan Technology Co., Ltd.",
   "main": "bld/library/index.js",
