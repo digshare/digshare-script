@@ -1,10 +1,11 @@
+import {devLog} from './@utils';
 import {IStore} from './api';
 import {FC} from './script';
 
 export function devRun<TStore extends IStore>(
   expression: any,
   devStore: TStore,
-  fn: FC<IStore>,
+  fn: FC<TStore>,
   {
     payload = {},
     dryRun = false,
@@ -29,7 +30,7 @@ export function devRun<TStore extends IStore>(
     {
       requestId: 'dev',
     },
-    (_, res) => console.info('dev-run result:', res),
+    devLog,
     devStore,
   ).catch(console.error);
 }

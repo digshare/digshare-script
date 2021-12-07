@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 
+import {devLog} from '../@utils';
 import {ScriptStorage} from '../storage';
 
 import {ImageExcerpt, PublishMessageParams, Subscriber} from './api.doc';
@@ -154,11 +155,11 @@ export class DevScriptAPI<TStore extends IStore> implements IScriptAPI<TStore> {
   }
 
   async saveStorage<TStore>(storage: ScriptStorage<TStore>): Promise<void> {
-    console.info('dev-run: saveStorage', storage);
+    devLog('saveStorage', storage);
   }
 
   async publishMessage(params: PublishMessageParams): Promise<void> {
-    console.info('dev-run: publishMessage', params);
+    devLog('publishMessage', params);
   }
 
   async getSubscribers({
@@ -168,7 +169,7 @@ export class DevScriptAPI<TStore extends IStore> implements IScriptAPI<TStore> {
     after: string | undefined;
     limit: number;
   }): Promise<Subscriber[]> {
-    console.info('dev-run: getSubscribers', {
+    devLog('getSubscribers', {
       after,
       limit,
     });
@@ -176,7 +177,7 @@ export class DevScriptAPI<TStore extends IStore> implements IScriptAPI<TStore> {
   }
 
   async *getSubscribersIterator(pageSize = 200): AsyncGenerator<Subscriber> {
-    console.info('dev-run: getSubscribers', {pageSize});
+    devLog('getSubscribers', {pageSize});
   }
 
   async uploadImage(
