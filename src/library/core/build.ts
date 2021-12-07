@@ -7,19 +7,26 @@ import {nodeResolve} from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import {rollup} from 'rollup';
 
-export async function build(input: string, out?: string): Promise<void> {
-  if (!out) {
+export async function build({
+  input,
+  registry,
+  output,
+}: {
+  input: string;
+  registry: string;
+  output?: string;
+}): Promise<void> {
+  if (!output) {
     let packageJSON = Path.resolve('package.json');
-    out = JSON.parse((await FS.readFile(packageJSON)).toString('utf8')).main;
+    output = JSON.parse((await FS.readFile(packageJSON)).toString('utf8')).main;
   }
 
-  if (!out) {
+  if (!output) {
     throw Error('Out path is required');
   }
 
   let bundle = await rollup({
     input,
-
     plugins: [
       commonjs(),
       nodeResolve({
@@ -34,8 +41,10 @@ export async function build(input: string, out?: string): Promise<void> {
   });
 
   await bundle.write({
-    file: out,
+    file: output,
     format: 'cjs',
     exports: 'named',
   });
+
+  await FS.writeFile(Path.join(Path.dirname(output), 'registry'), registry);
 }

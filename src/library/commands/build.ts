@@ -15,6 +15,20 @@ export class BuildOptions extends Options {
     default: '',
   })
   output!: string;
+
+  @option({
+    flag: 'r',
+    description: 'Registry value',
+    default: '',
+  })
+  registry!: string;
+
+  @option({
+    flag: 'e',
+    description: 'Registry environment variable name',
+    default: '',
+  })
+  env!: string;
 }
 
 @command({
@@ -22,7 +36,17 @@ export class BuildOptions extends Options {
 })
 export default class extends Command {
   @metadata
-  async execute({input, output}: BuildOptions): Promise<void> {
-    await build(input, output);
+  async execute({input, output, registry, env}: BuildOptions): Promise<void> {
+    registry ||= env && process.env[env]!;
+
+    if (!registry) {
+      throw Error('Registry is required');
+    }
+
+    await build({
+      input,
+      registry,
+      output,
+    });
   }
 }
