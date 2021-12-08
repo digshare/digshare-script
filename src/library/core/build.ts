@@ -34,7 +34,11 @@ export async function build({
       }),
       json(),
       replace({
-        'process.env.DIGSHARE_API': `'${process.env['DIGSHARE_API']}'`,
+        ...(process.env['DIGSHARE_API']
+          ? {
+              'process.env.DIGSHARE_API': `'${process.env['DIGSHARE_API']}'`,
+            }
+          : {}),
         preventAssignment: true,
       }),
     ],
