@@ -1,9 +1,10 @@
+import {serialize} from 'bson';
 import fetch from 'node-fetch';
 
 import {devLog} from '../@utils';
 import {ScriptStorage} from '../storage';
 
-import {ImageExcerpt, PublishMessageParams, Subscriber} from './api.doc';
+import {PublishMessageParams, Subscriber} from './api.doc';
 
 export type IStore = Record<string, any>;
 
@@ -18,7 +19,6 @@ export interface IScriptAPI<TStore extends IStore = IStore> {
   }): Promise<Subscriber[]>;
 
   getSubscribersIterator(pageSize?: number): AsyncGenerator<Subscriber>;
-  uploadImage(image: string | Buffer | ArrayBuffer): Promise<ImageExcerpt>;
 }
 
 export class ScriptAPI<TStore extends IStore> implements IScriptAPI<TStore> {
@@ -31,13 +31,19 @@ export class ScriptAPI<TStore extends IStore> implements IScriptAPI<TStore> {
   }
 
   async saveStorage(storage: ScriptStorage<TStore>): Promise<void> {
+    if (!storage.changed) {
+      return;
+    }
+
     await this.call('/channel-script/set-storage', {
       storage: storage.raw,
     });
   }
 
   async publishMessage(params: PublishMessageParams): Promise<void> {
-    await this.call('/channel/publish-message', params);
+    await this.call('/channel/publish-message', serialize(params), {
+      'content-type': 'application/bson',
+    });
   }
 
   async getSubscribers({
@@ -95,46 +101,22 @@ export class ScriptAPI<TStore extends IStore> implements IScriptAPI<TStore> {
     }
   }
 
-  async uploadImage(
-    image: string | Buffer | ArrayBuffer,
-  ): Promise<ImageExcerpt> {
-    if (typeof image === 'string') {
-      image = await fetch(image).then(res => res.arrayBuffer());
-    }
+  private call<T>(path: string, data: any, headers?: any): Promise<T> {
+    headers = {
+      'content-type': 'application/json',
+      authorization: this.token,
+      ...headers,
+    };
 
-    return this.upload('/channel/upload-content-image', image as ArrayBuffer);
-  }
-
-  private call<T>(path: string, data: unknown): Promise<T> {
     return fetch(`${this.baseURL}${path}`, {
       method: 'post',
-      body: JSON.stringify(data),
-      headers: {
-        'content-type': 'application/json',
-        authorization: this.token,
-      },
+      body:
+        headers?.['content-type'] === 'application/json'
+          ? JSON.stringify(data)
+          : data,
+      headers,
       // magic number
-      timeout: 4000,
-    })
-      .then(res => res.json())
-      .then(json => {
-        if (json.error) {
-          throw Error(JSON.stringify(json.error, undefined, 2));
-        }
-
-        return json.value;
-      });
-  }
-
-  private upload<T>(path: string, file: Buffer | ArrayBuffer): Promise<T> {
-    return fetch(`${this.baseURL}${path}`, {
-      method: 'post',
-      body: file,
-      headers: {
-        authorization: this.token,
-      },
-      // magic number
-      timeout: 8000,
+      timeout: 6000,
     })
       .then(res => res.json())
       .then(json => {
@@ -177,17 +159,8 @@ export class DevScriptAPI<TStore extends IStore> implements IScriptAPI<TStore> {
   }
 
   async *getSubscribersIterator(pageSize = 200): AsyncGenerator<Subscriber> {
-    devLog('getSubscribers', {pageSize});
-  }
-
-  async uploadImage(
-    _image: string | Buffer | ArrayBuffer,
-  ): Promise<ImageExcerpt> {
-    return {
-      id: String(Math.random()),
-      url: 'http://dev.dss.com',
-      width: 1920,
-      height: 1080,
-    };
+    devLog('getSubscribers', {
+      pageSize,
+    });
   }
 }

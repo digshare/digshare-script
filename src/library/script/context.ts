@@ -1,4 +1,5 @@
 import {IScriptAPI, IStore} from './api';
+import {ScriptStorage} from './storage';
 
 export interface ScriptContext<TStore extends IStore> {
   /**
@@ -18,7 +19,12 @@ export interface ScriptContext<TStore extends IStore> {
    */
   baseURL: string;
   /**
-   * 频道脚本相关 open api 封装
+   * 频道脚本相关 Open API 封装
    */
   api: IScriptAPI<TStore>;
+  /**
+   * 来自 `api.getScriptStorage`
+   * 函数执行完成后将自动保存
+   */
+  storage: ScriptStorage<TStore>;
 }

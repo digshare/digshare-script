@@ -9,11 +9,9 @@ import {rollup} from 'rollup';
 
 export async function build({
   input,
-  registry,
   output,
 }: {
   input: string;
-  registry: string;
   output?: string;
 }): Promise<void> {
   if (!output) {
@@ -49,6 +47,4 @@ export async function build({
     format: 'cjs',
     exports: 'named',
   });
-
-  await FS.writeFile(Path.join(Path.dirname(output), 'registry'), registry);
 }

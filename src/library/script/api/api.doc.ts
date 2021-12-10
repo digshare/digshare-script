@@ -32,14 +32,7 @@ export interface Subscriber {
 
 export interface PublishMessageParams {
   content: string;
-  images?: string[];
+  open?: boolean;
+  images?: Buffer[];
   requestId?: string;
-  opened?: boolean;
-}
-
-export interface ImageExcerpt {
-  id: string;
-  url: string;
-  width: number;
-  height: number;
 }
