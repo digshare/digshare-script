@@ -34,5 +34,6 @@ export interface PublishMessageParams {
   content: string;
   open?: boolean;
   images?: Buffer[];
+  links?: string[];
   requestId?: string;
 }
