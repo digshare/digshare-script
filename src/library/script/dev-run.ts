@@ -1,8 +1,7 @@
 import {devLog} from './@utils';
-import {IStore} from './api';
 import {FC} from './script';
 
-export function devRun<TStore extends IStore>(
+export function devRun<TStore extends object>(
   expression: any,
   devStore: TStore,
   fn: FC<TStore>,

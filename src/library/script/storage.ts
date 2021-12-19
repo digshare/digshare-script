@@ -1,41 +1,33 @@
-export class ScriptStorage<TStore> {
-  private store: TStore;
+const hasOwnProperty = Object.prototype.hasOwnProperty;
 
+export class ScriptStorage<TData extends object> {
   /**
    * 是否有改变
    */
   changed = false;
 
-  get raw(): TStore | undefined {
-    return Object.keys(this.store).length ? this.store : undefined;
+  get raw(): Partial<TData> {
+    return this.data;
   }
 
-  constructor(store: TStore) {
-    this.store = store ? Object(store) : {};
+  constructor(private data: Partial<TData>) {}
+
+  getItem<TKey extends keyof TData>(key: TKey): TData[TKey] | undefined {
+    return this.data[key];
   }
 
-  getItem<TKey extends keyof TStore>(key: TKey): TStore[TKey] | undefined {
-    return this.store[key];
+  setItem<TKey extends keyof TData>(key: TKey, value: TData[TKey]): void {
+    this.changed ||= this.data[key] !== value;
+    this.data[key] = value;
   }
 
-  setItem<TKey extends keyof TStore>(key: TKey, value: TStore[TKey]): void {
-    if (typeof this.store !== 'object') {
-      // eslint-disable-next-line @mufan/no-object-literal-type-assertion
-      this.store = {} as TStore;
-    }
-
-    this.changed ||= this.store[key] !== value;
-    this.store[key] = value;
-  }
-
-  removeItem(key: keyof TStore): void {
-    this.changed ||= key in this.store;
-    delete this.store[key];
+  removeItem(key: keyof TData): void {
+    this.changed ||= hasOwnProperty.call(this.data, key);
+    delete this.data[key];
   }
 
   clear(): void {
     this.changed = true;
-    // eslint-disable-next-line @mufan/no-object-literal-type-assertion
-    this.store = {} as TStore;
+    this.data = {};
   }
 }
