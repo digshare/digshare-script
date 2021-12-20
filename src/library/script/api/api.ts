@@ -21,7 +21,7 @@ export class ScriptAPI<TData extends object> implements IScriptAPI<TData> {
   }
 
   async updateStorage(storage: Partial<TData>): Promise<void> {
-    await this.call('/channel-script/set-storage', {
+    await this.call('/channel-script/update-storage', {
       storage,
     });
   }
