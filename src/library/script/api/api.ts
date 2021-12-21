@@ -11,8 +11,16 @@ export interface IScriptAPI<TData extends object = object> {
   publishMessage(options: PublishMessageOptions): Promise<void>;
 }
 
+export interface ScriptAPIOptions {
+  timeout?: number;
+}
+
 export class ScriptAPI<TData extends object> implements IScriptAPI<TData> {
-  constructor(private baseURL: string, private token: string) {}
+  constructor(
+    private baseURL: string,
+    private token: string,
+    private options: ScriptAPIOptions = {},
+  ) {}
 
   async getStorage(): Promise<Partial<TData>> {
     let {storage} = Object(await this.call('/channel-script/get-storage', {}));
@@ -33,6 +41,8 @@ export class ScriptAPI<TData extends object> implements IScriptAPI<TData> {
   }
 
   private call<T>(path: string, data: any, headers?: any): Promise<T> {
+    let {timeout} = this.options;
+
     headers = {
       'content-type': 'application/json',
       authorization: this.token,
@@ -46,8 +56,7 @@ export class ScriptAPI<TData extends object> implements IScriptAPI<TData> {
           ? JSON.stringify(data)
           : data,
       headers,
-      // magic number
-      timeout: 6000,
+      timeout,
     })
       .then(res => res.json())
       .then(json => {
