@@ -1,7 +1,7 @@
 import {IScriptAPI} from './api';
 import {ScriptStorage} from './storage';
 
-export interface ScriptContext<TData extends object> {
+export interface ScriptContext<TStorage extends object> {
   /**
    * 是否是模拟运行
    */
@@ -21,10 +21,10 @@ export interface ScriptContext<TData extends object> {
   /**
    * 频道脚本相关 Open API 封装
    */
-  api: IScriptAPI<TData>;
+  api: IScriptAPI<TStorage>;
   /**
    * 来自 `api.getScriptStorage`
    * 函数执行完成后将自动保存
    */
-  storage: ScriptStorage<TData>;
+  storage: ScriptStorage<TStorage>;
 }
