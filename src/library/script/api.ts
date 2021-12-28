@@ -1,26 +1,34 @@
 import {serialize} from 'bson';
 import fetch from 'node-fetch';
 
-import {devLog} from '../@utils';
+import {devLog} from './@utils';
 
-import {PublishMessageOptions} from './api.doc';
+export interface PublishMessageOptions {
+  content: string;
+  open?: boolean;
+  images?: Buffer[];
+  links?: string[];
+  clientId?: string;
+}
 
 export interface IScriptAPI<TData extends object = object> {
+  baseURL: string;
   getStorage(): Promise<Partial<TData>>;
   updateStorage(data: Partial<TData>): Promise<void>;
   publishMessage(options: PublishMessageOptions): Promise<void>;
 }
 
 export interface ScriptAPIOptions {
+  baseURL?: string;
   timeout?: number;
 }
 
 export class ScriptAPI<TData extends object> implements IScriptAPI<TData> {
-  constructor(
-    private baseURL: string,
-    private token: string,
-    private options: ScriptAPIOptions = {},
-  ) {}
+  get baseURL(): string {
+    return this.options.baseURL ?? 'https://api.dingshao.cn/v1';
+  }
+
+  constructor(private token: string, private options: ScriptAPIOptions = {}) {}
 
   async getStorage(): Promise<Partial<TData>> {
     let {storage} = Object(await this.call('/channel-script/get-storage', {}));
@@ -70,6 +78,8 @@ export class ScriptAPI<TData extends object> implements IScriptAPI<TData> {
 }
 
 export class DevScriptAPI<TData extends object> implements IScriptAPI<TData> {
+  baseURL = 'http://dingshare.dev';
+
   constructor(private storage: TData) {}
 
   async getStorage(): Promise<TData> {

@@ -8,15 +8,25 @@ dss build -i xxx -o xxx
 
 ### SDK
 
+main.js
+
 ```JavaScript
-import {script, devRun} from "dss-sdk";
+// import type {Script} from "@digshare/script"
 
-export const main = script(function(payload, context) {
-  // ~
-})
+export default function(payload, context) {
 
-// 方便测试运行
-devRun(process.env.NODE_ENV === 'development', {}, main);
+}) // as Script
+```
+
+test.js
+
+```JavaScript
+import {devRun} from "@digshare/script";
+import fn from "./main";
+// import type {DevRunOptions} from "@digshare/script"
+
+// 开发中测试运行
+devRun(fn, {} // as DevRunOptions);
 ```
 
 ## License
