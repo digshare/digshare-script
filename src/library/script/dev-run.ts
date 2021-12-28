@@ -1,3 +1,4 @@
+import {devLog} from './@utils';
 import {DevScriptAPI} from './api';
 import {Script} from './script';
 import {ScriptStorage} from './storage';
@@ -19,11 +20,43 @@ export async function devRun(
   script: Script<object, unknown>,
   {storage = {}, payload, dryRun = false}: DevRunOptions<object, unknown> = {},
 ): Promise<void> {
-  await script(payload, {
-    dryRun,
-    requestId: 'dev',
-    token: 'dev',
-    api: new DevScriptAPI(storage),
-    storage: new ScriptStorage(storage),
-  });
+  let done = devLog;
+
+  try {
+    let api = new DevScriptAPI(storage);
+    let storageObject = new ScriptStorage(await api.getStorage());
+
+    let context = {
+      dryRun,
+      requestId: 'dev',
+      token: 'dev',
+      api,
+      storage: storageObject,
+    };
+
+    let creation = await script(payload, context);
+
+    if (dryRun) {
+      return done({
+        creation,
+        storage: storageObject.raw,
+      });
+    }
+
+    if (creation) {
+      await api.publishMessage(creation);
+    }
+
+    if (storageObject.changed) {
+      await api.updateStorage(storageObject.raw);
+    }
+
+    return done({});
+  } catch (error: any) {
+    console.error(error);
+
+    return done({
+      error: error.message,
+    });
+  }
 }
