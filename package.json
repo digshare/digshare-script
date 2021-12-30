@@ -1,6 +1,6 @@
 {
   "name": "@digshare/script",
-  "version": "0.2.2-2",
+  "version": "0.2.2-1",
   "license": "MIT",
   "author": "Chengdu Mufan Technology Co., Ltd.",
   "main": "bld/library/index.js",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@rollup/plugin-commonjs": "^22.0.0-4",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.1.1",
     "@types/node": "^16.11.11",
     "@types/node-fetch": "^2.5.12",
