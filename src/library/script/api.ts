@@ -8,6 +8,7 @@ export interface PublishMessageOptions {
   open?: boolean;
   images?: Buffer[];
   links?: string[];
+  tags?: string[] | undefined;
   clientId?: string;
 }
 
