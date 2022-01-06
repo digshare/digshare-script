@@ -34,17 +34,26 @@ export async function devRun(
       storage: storageObject,
     };
 
-    let creation = await script(payload, context);
+    let creations = [];
+
+    for await (let creation of (isGeneratorFunction(script)
+      ? script(payload, context)
+      : // 类型太难写了
+        [script(payload, context)]) as any) {
+      if (typeof creation === 'object') {
+        if (dryRun) {
+          creations.push(creation);
+        } else {
+          await api.publishMessage(creation);
+        }
+      }
+    }
 
     if (dryRun) {
       return done({
-        creation,
+        creations,
         storage: storageObject.raw,
       });
-    }
-
-    if (creation) {
-      await api.publishMessage(creation);
     }
 
     if (storageObject.changed) {
@@ -59,4 +68,14 @@ export async function devRun(
       error: error.message,
     });
   }
+}
+
+// eslint-disable-next-line @mufan/explicit-return-type
+function isGeneratorFunction(fn: Script<object, unknown>) {
+  let fnConstructor = Object.getPrototypeOf(fn).constructor;
+
+  return (
+    fnConstructor === Object.getPrototypeOf(function* () {}).constructor ||
+    fnConstructor === Object.getPrototypeOf(async function* () {}).constructor
+  );
 }
