@@ -17,7 +17,7 @@ export class ScriptStorage<TData extends object> {
   }
 
   setItem<TKey extends keyof TData>(key: TKey, value: TData[TKey]): void {
-    this.changed ||= this.data[key] !== value;
+    this.changed = true;
     this.data[key] = value;
   }
 
