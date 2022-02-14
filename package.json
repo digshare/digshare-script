@@ -1,6 +1,6 @@
 {
   "name": "@digshare/script",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "license": "MIT",
   "author": "Chengdu Mufan Technology Co., Ltd.",
   "main": "bld/library/index.js",
