@@ -8,11 +8,16 @@
   "bin": {
     "dss": "bld/library/main.js"
   },
+  "files": [
+    "bld",
+    "sdk.d.ts"
+  ],
   "scripts": {
     "build": "rimraf ./bld && tsc --build",
     "lint": "eslint .",
     "lint-prettier": "prettier --check .",
-    "test": "yarn lint-prettier && yarn build && yarn lint",
+    "test": "yarn lint-prettier && yarn build && yarn lint && yarn bundle-types",
+    "bundle-types": "yarn dts-bundle-generator -o sdk.d.ts bld/library/index.d.ts",
     "prepublishOnly": "yarn test"
   },
   "dependencies": {
@@ -31,6 +36,7 @@
   "devDependencies": {
     "@mufan/code": "^0.2.10",
     "@mufan/eslint-plugin": "^0.1.48",
+    "dts-bundle-generator": "^6.5.0",
     "eslint": "^8.3.0",
     "prettier": "^2.5.0",
     "rimraf": "^3.0.2",
