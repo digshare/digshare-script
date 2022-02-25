@@ -7,7 +7,13 @@ export interface PublishMessageOptions {
   content: string;
   open?: boolean;
   images?: Buffer[];
-  links?: string[];
+  links?: (
+    | string
+    | {
+        url: string;
+        description?: string;
+      }
+  )[];
   tags?: string[] | undefined;
   clientId?: string;
 }
