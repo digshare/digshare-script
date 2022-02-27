@@ -1,0 +1,24 @@
+{
+  "name": "@digshare/script",
+  "version": "0.0.0",
+  "author": "Chengdu Enverse Technology Co., Ltd.",
+  "main": "bld/library/index.js",
+  "types": "bld/library/index.d.ts",
+  "scripts": {
+    "build": "rimraf ./bld && tsc --build",
+    "lint": "eslint .",
+    "lint-prettier": "prettier --check .",
+    "test": "yarn lint-prettier && yarn build && yarn lint"
+  },
+  "dependencies": {
+    "tslib": "^2.3.1"
+  },
+  "devDependencies": {
+    "@mufan/code": "^0.2.10",
+    "@mufan/eslint-plugin": "^0.1.48",
+    "eslint": "^8.10.0",
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.5.5"
+  }
+}
