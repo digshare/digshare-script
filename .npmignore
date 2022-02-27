@@ -1,9 +1,7 @@
 *
-
 !/src/library/**/*.ts
-!/src/cli/**/*.ts
 !/bld/library/**
+!/src/cli/**/*.ts
 !/bld/cli/**
 !/bundled-types.d.ts
-
 *.tsbuildinfo
