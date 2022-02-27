@@ -5,14 +5,15 @@
   "main": "bld/library/index.js",
   "types": "bld/library/index.d.ts",
   "bin": {
-    "dss": "bld/library/main.js"
+    "digshare-script": "bld/cli/main.js",
+    "dss": "bld/cli/main.js"
   },
   "scripts": {
     "build": "rimraf ./bld && tsc --build",
     "lint": "eslint .",
     "lint-prettier": "prettier --check .",
     "test": "yarn lint-prettier && yarn build && yarn lint && yarn bundle-types",
-    "bundle-types": "yarn dts-bundle-generator -o sdk.d.ts bld/library/index.d.ts",
+    "bundle-types": "dts-bundle-generator --out-file bundled-types.d.ts bld/library/index.d.ts",
     "prepublishOnly": "yarn test"
   },
   "dependencies": {

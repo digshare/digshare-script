@@ -1,6 +1,6 @@
 import {Command, Options, command, metadata, option} from 'clime';
 
-import {build} from '../core';
+import {build} from '../@core';
 
 export class BuildOptions extends Options {
   @option({

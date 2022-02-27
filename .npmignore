@@ -1,0 +1,9 @@
+*
+
+!/src/library/**/*.ts
+!/src/cli/**/*.ts
+!/bld/library/**
+!/bld/cli/**
+!/bundled-types.d.ts
+
+*.tsbuildinfo
