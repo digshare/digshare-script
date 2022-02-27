@@ -4,9 +4,8 @@
     "composite": true,
 
     "types": ["@types/node"],
-    "lib": ["DOM", "ESNext"],
+    "lib": ["esnext"],
     "resolveJsonModule": true,
-    "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
 

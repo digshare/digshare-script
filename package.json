@@ -1,17 +1,12 @@
 {
   "name": "@digshare/script",
   "version": "0.2.6",
-  "license": "MIT",
-  "author": "Chengdu Mufan Technology Co., Ltd.",
+  "author": "Chengdu Enverse Technology Co., Ltd.",
   "main": "bld/library/index.js",
   "types": "bld/library/index.d.ts",
   "bin": {
     "dss": "bld/library/main.js"
   },
-  "files": [
-    "bld",
-    "sdk.d.ts"
-  ],
   "scripts": {
     "build": "rimraf ./bld && tsc --build",
     "lint": "eslint .",
@@ -37,9 +32,9 @@
     "@mufan/code": "^0.2.10",
     "@mufan/eslint-plugin": "^0.1.48",
     "dts-bundle-generator": "^6.5.0",
-    "eslint": "^8.3.0",
-    "prettier": "^2.5.0",
+    "eslint": "^8.10.0",
+    "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.5.2"
+    "typescript": "^4.5.5"
   }
 }

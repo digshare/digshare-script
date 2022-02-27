@@ -1,12 +1,14 @@
 {
   "extends": "@mufan/code-boilerplates/typescript",
   "options": {
-    "name": "dss-sdk",
-    "license": "MIT",
-    "author": "Chengdu Mufan Technology Co., Ltd.",
+    "name": "@digshare/script",
+    "author": "Chengdu Enverse Technology Co., Ltd.",
     "tsProjects": [
       {
         "name": "library"
+      },
+      {
+        "name": "cli"
       },
       {
         "name": "test"
