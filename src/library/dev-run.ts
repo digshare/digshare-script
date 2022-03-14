@@ -3,22 +3,22 @@ import {DevScriptAPI} from './api';
 import {Script} from './script';
 import {ScriptStorage} from './storage';
 
-export type DevRunOptions<TStorage extends object, TPayload> = {
+export type DevRunOptions<TPayload, TStorage extends object> = {
   dryRun?: boolean;
 } & (object extends TStorage ? {storage?: TStorage} : {storage: TStorage}) &
   (undefined extends TPayload ? {payload?: TPayload} : {payload: TPayload});
 
-export async function devRun<TStorage extends object, TPayload>(
-  script: Script<TStorage, TPayload>,
-  ...args: DevRunOptions<TStorage, TPayload> extends infer TOptions
+export async function devRun<TPayload, TStorage extends object>(
+  script: Script<TPayload, TStorage>,
+  ...args: DevRunOptions<TPayload, TStorage> extends infer TOptions
     ? object extends TOptions
       ? [options?: TOptions]
       : [options: TOptions]
     : never
 ): Promise<void>;
 export async function devRun(
-  script: Script<object, unknown>,
-  {storage = {}, payload, dryRun = false}: DevRunOptions<object, unknown> = {},
+  script: Script<unknown, object>,
+  {storage = {}, payload, dryRun = false}: DevRunOptions<unknown, object> = {},
 ): Promise<void> {
   let done = devLog;
 
@@ -71,7 +71,7 @@ export async function devRun(
 }
 
 // eslint-disable-next-line @mufan/explicit-return-type
-function isGeneratorFunction(fn: Script<object, unknown>) {
+function isGeneratorFunction(fn: Script<unknown, object>) {
   let fnConstructor = Object.getPrototypeOf(fn).constructor;
 
   return (

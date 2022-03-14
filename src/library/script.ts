@@ -26,7 +26,7 @@ export interface ScriptMessage {
   tags?: string[] | undefined;
 }
 
-export type Script<TStorage extends object, TPayload> = (
+export type Script<TPayload, TStorage extends object> = (
   payload: TPayload,
   context: ScriptContext<TStorage>,
 ) => Promise<ScriptMessage | void> | AsyncGenerator<ScriptMessage, void>;
