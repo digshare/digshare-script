@@ -1,4 +1,7 @@
+import {checkSize} from './@utils';
 const hasOwnProperty = Object.prototype.hasOwnProperty;
+
+export const SCRIPT_BYTES_LIMIT = 1024 * 1024;
 
 export class ScriptStorage<TData extends object> {
   /**
@@ -19,6 +22,8 @@ export class ScriptStorage<TData extends object> {
   setItem<TKey extends keyof TData>(key: TKey, value: TData[TKey]): void {
     this.changed = true;
     this.data[key] = value;
+
+    checkSize(this.data, SCRIPT_BYTES_LIMIT);
   }
 
   removeItem(key: keyof TData): void {

@@ -4,3 +4,9 @@ export function devLog(...args: any[]): void {
     ...args,
   );
 }
+
+export function checkSize(value: any, max: number): void {
+  if (Buffer.from(JSON.stringify(value)).length > max) {
+    throw new Error(`value size is too large, max is ${max}`);
+  }
+}
