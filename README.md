@@ -28,6 +28,8 @@ export default async function (payload, context) {
 }
 ```
 
+> 目前盯梢脚本编辑器提供了 JavaScript 和 TypeScript 两个版本的模板，可自行切换。
+
 在脚本“调试”页面点击右下角“测试”按钮即可在模拟环境下执行脚本，此时不会真的推送消息。
 
 调试完成后，可以在部署页面看到 webhook 或按需配置计划执行，点击右下角“部署”按钮即可实际部署脚本。部署完成后，按钮将变为“执行”，再次点击可以手动执行部署脚本，此时如果脚本函数返回值不为空，则会推送相关消息到当前频道。
@@ -98,4 +100,4 @@ export default async function (payload, context) {
 
 盯梢脚本支持本地开发构建后，通过 npm 发布到盯梢脚本 registry。
 
-未完待续。
+参考[盯梢脚本模板](https://github.com/digshare/digshare-script-template)。
