@@ -30,3 +30,13 @@ export type Script<TPayload, TStorage extends object> = (
   payload: TPayload,
   context: ScriptContext<TStorage>,
 ) => Promise<ScriptMessage | void> | AsyncGenerator<ScriptMessage, void>;
+
+/**
+ * 类型辅助函数，无其他用途
+ * @param fn<payload, storage>
+ */
+export function script<TPayload, TStorage extends object>(
+  fn: Script<TPayload, TStorage>,
+): Script<TPayload, TStorage> {
+  return fn;
+}
