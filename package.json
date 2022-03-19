@@ -1,6 +1,6 @@
 {
   "name": "@digshare/script",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Chengdu Enverse Technology Co., Ltd.",
   "main": "bld/library/index.js",
   "types": "bld/library/index.d.ts",
