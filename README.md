@@ -34,6 +34,8 @@ export default async function (payload, context) {
 
 调试完成后，可以在部署页面看到 webhook 或按需配置计划执行，点击右下角“部署”按钮即可实际部署脚本。部署完成后，按钮将变为“执行”，再次点击可以手动执行部署脚本，此时如果脚本函数返回值不为空，则会推送相关消息到当前频道。
 
+[在线编辑器提供了少量 npm 包](https://docs.dingshao.cn/script-manual/online-editor/available-npm-packages)，同时提供了全局的 `fetch` API（`node-fetch`）供开发者使用。如果您想使用更多 npm 包，建议通过本地构建上传，参考[盯梢脚本模板](https://github.com/digshare/digshare-script-template)。
+
 ## 使用参考
 
 ### 脚本 `default` 函数
