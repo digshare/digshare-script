@@ -5,23 +5,28 @@ import {ScriptStorage} from './storage';
 
 export type DevRunOptions<TPayload, TStorage extends object> = {
   dryRun?: boolean;
-} & (object extends TStorage ? {storage?: TStorage} : {storage: TStorage}) &
-  (undefined extends TPayload ? {payload?: TPayload} : {payload: TPayload});
+  storage?: Partial<TStorage>;
+  /**
+   * 是否在执行完成后退出进程，默认 `true`。
+   */
+  exit?: boolean;
+} & (undefined extends TPayload ? {payload?: TPayload} : {payload: TPayload});
 
 export async function devRun<TPayload, TStorage extends object>(
   script: Script<TPayload, TStorage>,
-  ...args: DevRunOptions<TPayload, TStorage> extends infer TOptions
-    ? object extends TOptions
-      ? [options?: TOptions]
-      : [options: TOptions]
-    : never
+  ...args: undefined extends TPayload
+    ? [options?: DevRunOptions<TPayload, TStorage>]
+    : [options: DevRunOptions<TPayload, TStorage>]
 ): Promise<void>;
 export async function devRun(
   script: Script<unknown, object>,
-  {storage = {}, payload, dryRun = false}: DevRunOptions<unknown, object> = {},
+  {
+    storage = {},
+    payload,
+    dryRun = false,
+    exit = true,
+  }: DevRunOptions<unknown, object> = {},
 ): Promise<void> {
-  let done = devLog;
-
   try {
     let api = new DevScriptAPI(storage);
     let storageObject = new ScriptStorage(await api.getStorage());
@@ -50,23 +55,31 @@ export async function devRun(
     }
 
     if (dryRun) {
-      return done({
+      devLog({
         creations,
         storage: storageObject.raw,
       });
+    } else {
+      if (storageObject.changed) {
+        await api.updateStorage(storageObject.raw);
+      }
+
+      devLog({});
     }
 
-    if (storageObject.changed) {
-      await api.updateStorage(storageObject.raw);
+    if (exit) {
+      process.exit(0);
     }
-
-    return done({});
   } catch (error: any) {
     console.error(error);
 
-    return done({
+    devLog({
       error: error.message,
     });
+
+    if (exit) {
+      process.exit(1);
+    }
   }
 }
 
