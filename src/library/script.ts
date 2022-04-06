@@ -20,6 +20,8 @@ export interface ScriptMessage {
     | string
     | {
         url: string;
+        title?: string;
+        image?: string;
         description?: string;
       }
   )[];

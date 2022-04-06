@@ -11,6 +11,8 @@ export interface PublishMessageOptions {
     | string
     | {
         url: string;
+        title?: string;
+        image?: string;
         description?: string;
       }
   )[];
