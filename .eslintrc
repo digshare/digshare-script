@@ -1,0 +1,9 @@
+{
+  "root": true,
+  "ignorePatterns": ["/src/", "/bld/"],
+  "extends": ["eslint:recommended"],
+  "env": {
+    "node": true,
+    "es2020": true
+  }
+}
