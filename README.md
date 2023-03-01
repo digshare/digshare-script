@@ -1,6 +1,15 @@
-# @digshare/script
+# 盯梢 {script}
 
-Just another awesome magic.
+```ts
+import {script} from '@digshare/script';
+
+export default script(async function* ({data}) {
+  yield {
+    content: '',
+    data,
+  };
+});
+```
 
 ## License
 

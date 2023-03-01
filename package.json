@@ -7,18 +7,34 @@
     "types": "./bld/library/index.d.ts",
     "require": "./bld/library/index.js"
   },
+  "bin": {
+    "dss": "./bin/run"
+  },
   "scripts": {
     "build": "rimraf ./bld && tsc --build",
     "lint": "run-in-every eslint-project --parallel --echo -- eslint --config {configFileName} --no-error-on-unmatched-pattern .",
     "lint-prettier": "prettier --check .",
     "test": "yarn lint-prettier && yarn build && yarn lint"
   },
+  "oclif": {
+    "bin": "dss",
+    "dirname": "dss",
+    "commands": "./bld/commands",
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-plugins"
+    ]
+  },
   "dependencies": {
+    "@oclif/core": "^2",
+    "@oclif/plugin-help": "^5",
+    "@oclif/plugin-plugins": "^2.3.2",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
     "@mufan/code": "^0.2.16",
     "@mufan/eslint-plugin": "^0.1.77",
+    "@types/node": "^18.14.2",
     "eslint": "^8.35.0",
     "prettier": "^2.8.4",
     "rimraf": "^3.0.2",
