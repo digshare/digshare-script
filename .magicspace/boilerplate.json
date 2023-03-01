@@ -7,11 +7,15 @@
     "author": "Chengdu Enverse Technology Co., Ltd.",
     "projects": [
       {
-        "name": "library"
+        "name": "library",
+        "module": ["cjs", "esm"]
       },
       {
         "name": "test",
         "references": ["library"]
+      },
+      {
+        "name": "cli"
       }
     ]
   }
