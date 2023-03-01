@@ -4,7 +4,13 @@
       "path": "src/library"
     },
     {
+      "path": "src/library/tsconfig.esm.json"
+    },
+    {
       "path": "src/test"
+    },
+    {
+      "path": "src/cli"
     }
   ],
   "files": []
