@@ -20,16 +20,15 @@
   "oclif": {
     "bin": "dss",
     "dirname": "dss",
-    "commands": "./bld/commands",
+    "commands": "./bld/cli/commands",
     "plugins": [
-      "@oclif/plugin-help",
-      "@oclif/plugin-plugins"
+      "@oclif/plugin-help"
     ]
   },
   "dependencies": {
     "@oclif/core": "^2",
     "@oclif/plugin-help": "^5",
-    "@oclif/plugin-plugins": "^2.3.2",
+    "rollup": "^3.17.3",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
