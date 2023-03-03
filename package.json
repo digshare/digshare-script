@@ -28,6 +28,9 @@
   "dependencies": {
     "@oclif/core": "^2",
     "@oclif/plugin-help": "^5",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "enhanced-resolve": "^5.12.0",
     "rollup": "^3.17.3",
     "tslib": "^2.5.0"
   },
