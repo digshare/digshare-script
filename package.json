@@ -15,12 +15,13 @@
     "test": "yarn lint-prettier && yarn build && yarn lint"
   },
   "dependencies": {
+    "entrance-decorator": "^0.2.1",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
     "@mufan/code": "^0.2.16",
     "@mufan/eslint-plugin": "^0.1.77",
-    "eslint": "^8.35.0",
+    "eslint": "^8.36.0",
     "prettier": "^2.8.4",
     "rimraf": "^3.0.2",
     "run-in-every": "^0.2.0",
