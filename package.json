@@ -30,14 +30,16 @@
     "@oclif/plugin-help": "^5",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-virtual": "^3.0.1",
     "enhanced-resolve": "^5.12.0",
-    "rollup": "^3.17.3",
-    "tslib": "^2.5.0"
+    "rollup": "^3.19.1",
+    "tslib": "^2.5.0",
+    "undici": "^5.20.0"
   },
   "devDependencies": {
     "@mufan/code": "^0.2.16",
     "@mufan/eslint-plugin": "^0.1.77",
-    "@types/node": "^18.14.2",
+    "@types/node": "^18.15.0",
     "eslint": "^8.35.0",
     "prettier": "^2.8.4",
     "rimraf": "^3.0.2",

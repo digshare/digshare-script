@@ -5,5 +5,13 @@
   "env": {
     "node": true,
     "es2020": true
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.mjs"],
+      "parserOptions": {
+        "sourceType": "module"
+      }
+    }
+  ]
 }
