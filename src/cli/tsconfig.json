@@ -3,6 +3,7 @@
   "compilerOptions": {
     "composite": true,
     "types": ["node"],
+    "experimentalDecorators": true,
     "outDir": "../../bld/cli"
   }
 }

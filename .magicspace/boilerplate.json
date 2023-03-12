@@ -15,7 +15,8 @@
         "references": ["library"]
       },
       {
-        "name": "cli"
+        "name": "cli",
+        "entrances": true
       }
     ]
   }
