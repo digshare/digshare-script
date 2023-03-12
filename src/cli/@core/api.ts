@@ -5,7 +5,10 @@ import type {Config} from './config';
 export class API {
   constructor(readonly config: Config) {}
 
-  async call<TReturn>(path: string, params: object): Promise<TReturn> {
+  async call<TReturn extends object>(
+    path: string,
+    params: object,
+  ): Promise<TReturn> {
     const {
       config: {accessToken, endpoint},
     } = this;

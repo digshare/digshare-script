@@ -1,4 +1,4 @@
-import {Command} from '@oclif/core';
+import {Command} from '../@command';
 
 export class Connect extends Command {
   async run(): Promise<void> {
