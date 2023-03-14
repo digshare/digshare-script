@@ -35,7 +35,8 @@
     "entrance-decorator": "^0.2.1",
     "rollup": "^3.19.1",
     "tslib": "^2.5.0",
-    "undici": "^5.20.0"
+    "undici": "^5.20.0",
+    "x-value": "^0.1.10"
   },
   "devDependencies": {
     "@mufan/code": "^0.2.16",

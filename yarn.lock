@@ -1551,6 +1551,11 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
+lodash.isequal@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+  integrity sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==
+
 lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
@@ -2323,6 +2328,14 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
+
+x-value@^0.1.10:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/x-value/-/x-value-0.1.10.tgz#54603428483f4ce6f457f58d2c520d67228905bd"
+  integrity sha512-v197PAUh8FlWWn8xVTN1uif45AEGQGQhOFuuQJwLyqP58lzBN2vlhqXvI4aOGjKVfVknlEITg3uKTgoX8cDYXQ==
+  dependencies:
+    lodash.isequal "^4.5.0"
+    tslib "^2.5.0"
 
 yallist@^4.0.0:
   version "4.0.0"

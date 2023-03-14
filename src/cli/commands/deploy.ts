@@ -1,5 +1,7 @@
+import * as Path from 'path';
+
 import {Command} from '../@command';
-import {pack} from '../@core';
+import {ScriptOptions, pack} from '../@core';
 
 export class Deploy extends Command {
   async run(): Promise<void> {
@@ -7,9 +9,16 @@ export class Deploy extends Command {
       entrances: {api},
     } = this;
 
+    const {dss = {}} = require(Path.resolve('package.json'));
+
+    const {schedule} = ScriptOptions.exact().satisfies(dss);
+
     const code = await pack(process.cwd());
 
-    await api.call('/v2/script/deploy', {script: code});
+    await api.call('/v2/script/deploy', {
+      script: code,
+      schedule,
+    });
 
     console.info('部署成功！');
   }
