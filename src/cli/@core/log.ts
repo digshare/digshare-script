@@ -13,12 +13,13 @@ export interface ScriptLogEvent {
 }
 
 export interface PollLogsOptions {
+  debug: boolean;
   startTime?: Date;
 }
 
 export async function* pollLogs(
   {api}: Entrances,
-  {startTime}: PollLogsOptions = {},
+  {debug, startTime}: PollLogsOptions,
 ): AsyncGenerator<ScriptLogEvent, void, undefined> {
   let lastNextToken: string | undefined;
 
@@ -27,6 +28,7 @@ export async function* pollLogs(
       events: ScriptLogEvent[];
       nextToken: string;
     }>('/v2/script/get-logs', {
+      debug,
       startTime,
       nextToken: lastNextToken,
     });

@@ -9,14 +9,14 @@ export class Logs extends Command {
     const {entrances} = this;
 
     const {
-      flags: {last},
+      flags: {debug, last},
     } = await this.parse(Logs);
 
     const startTime = last ? new Date(Date.now() - ms(last)) : undefined;
 
     await ensureAccessToken(entrances);
 
-    for await (const event of pollLogs(entrances, {startTime})) {
+    for await (const event of pollLogs(entrances, {debug, startTime})) {
       printLogEvent(event);
     }
   }
@@ -24,6 +24,9 @@ export class Logs extends Command {
   static override description = '查看脚本日志。';
 
   static override flags = {
+    debug: Flags.boolean({
+      description: '获取调试环境日志',
+    }),
     last: Flags.string({
       description: '最近一段时间，例如 "1d"',
     }),

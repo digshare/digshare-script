@@ -8,12 +8,12 @@ export class Run extends Command {
     const {entrances} = this;
 
     const {
-      flags: {'dry-run': dryRun},
+      flags: {debug, 'dry-run': dryRun},
     } = await this.parse(Run);
 
     await ensureAccessToken(entrances);
 
-    await invoke(entrances, {dryRun});
+    await invoke(entrances, {debug, dryRun});
 
     this.exit();
   }
@@ -21,6 +21,9 @@ export class Run extends Command {
   static override description = '手动触发脚本。';
 
   static override flags = {
+    debug: Flags.boolean({
+      description: '触发部署到调试环境的脚本',
+    }),
     'dry-run': Flags.boolean(),
   };
 }
