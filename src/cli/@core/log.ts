@@ -1,6 +1,7 @@
 import Chalk from 'chalk';
 
 import type {Entrances} from '../@entrances';
+import {sleep} from '../@utils';
 
 export const POLL_INTERVAL = 2000;
 
@@ -31,7 +32,7 @@ export async function* pollLogs(
     });
 
     if (events.length === 0) {
-      await new Promise(resolve => setTimeout(resolve, POLL_INTERVAL));
+      await sleep(POLL_INTERVAL);
       continue;
     }
 

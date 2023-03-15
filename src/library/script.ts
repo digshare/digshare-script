@@ -15,13 +15,17 @@ export type ScriptProgram<TState> = (
 export class Script<TState> {
   private api: API | undefined;
 
+  private dryRun = false;
+
   constructor(readonly program: ScriptProgram<TState>) {}
 
   async configure({
     endpoint,
     accessToken,
+    dryRun,
   }: ScriptConfigureOptions): Promise<void> {
     this.api = new API(endpoint, accessToken);
+    this.dryRun = dryRun;
   }
 
   async run({state}: ScriptRunOptions<TState>): Promise<void> {
@@ -49,10 +53,16 @@ export class Script<TState> {
   }
 
   private async publishMessage(message: ScriptMessage<TState>): Promise<void> {
-    const {api} = this;
+    const {api, dryRun} = this;
 
     if (!api) {
       throw new Error('API 未配置');
+    }
+
+    console.info('发布消息', message);
+
+    if (dryRun) {
+      return;
     }
 
     await api.call('/v2/channel/publish-message', message);
@@ -62,6 +72,7 @@ export class Script<TState> {
 export interface ScriptConfigureOptions {
   endpoint: string;
   accessToken: string;
+  dryRun: boolean;
 }
 
 export interface ScriptRunOptions<TState> {
