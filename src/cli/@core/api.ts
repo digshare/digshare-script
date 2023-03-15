@@ -10,7 +10,10 @@ export class API {
     params: object,
   ): Promise<TReturn> {
     const {
-      config: {accessToken, endpoint},
+      config: {
+        accessToken,
+        endpoints: {api: endpoint},
+      },
     } = this;
 
     const url = `${endpoint}${path}`;
@@ -27,7 +30,7 @@ export class API {
     const {status} = response;
 
     if (status !== 200) {
-      throw new Error(`Invalid response status: ${status}`);
+      throw new Error(`状态码错误: ${status}`);
     }
 
     const ret = (await response.json()) as

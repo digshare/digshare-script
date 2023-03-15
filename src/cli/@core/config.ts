@@ -1,11 +1,22 @@
+import * as FS from 'fs';
+
 export interface ConfigRaw {
   accessToken?: string;
-  endpoint?: string;
+  endpoints?: {
+    api?: string;
+    auth?: string;
+  };
 }
 
 export class Config {
-  readonly accessToken: string | undefined;
-  readonly endpoint: string;
+  private raw: ConfigRaw;
+
+  accessToken: string | undefined;
+
+  readonly endpoints: {
+    api: string;
+    auth: string;
+  };
 
   constructor(readonly path: string) {
     let raw: ConfigRaw | undefined;
@@ -16,9 +27,27 @@ export class Config {
       raw = {};
     }
 
-    const {accessToken, endpoint} = raw;
+    this.raw = raw;
+
+    const {
+      accessToken,
+      endpoints: {
+        api = 'https://api.dingshao.com',
+        auth = 'https://www.dingshao.com',
+      } = {},
+    } = raw;
 
     this.accessToken = accessToken;
-    this.endpoint = endpoint ?? 'https://api.dingshao.com';
+    this.endpoints = {
+      api,
+      auth,
+    };
+  }
+
+  setAccessToken(accessToken: string): void {
+    this.accessToken = accessToken;
+    this.raw.accessToken = accessToken;
+
+    FS.writeFileSync(this.path, `${JSON.stringify(this.raw, undefined, 2)}\n`);
   }
 }

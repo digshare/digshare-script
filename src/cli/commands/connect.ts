@@ -1,8 +1,11 @@
 import {Command} from '../@command';
+import {connectScript} from '../@core';
 
 export class Connect extends Command {
   async run(): Promise<void> {
-    console.log('connect');
+    await connectScript(this.entrances);
+
+    this.exit();
   }
 
   static override description =
