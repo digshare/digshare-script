@@ -31,8 +31,7 @@ export {default} from ${JSON.stringify(scriptSource)};
 
   const {
     output: [{code}],
-  } = await build.write({
-    file: Path.resolve(projectDir, 'bundled-script.mjs'),
+  } = await build.generate({
     inlineDynamicImports: true,
   });
 
