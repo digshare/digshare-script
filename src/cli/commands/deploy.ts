@@ -1,6 +1,7 @@
 import * as Path from 'path';
 
 import {Flags} from '@oclif/core';
+import prompts from 'prompts';
 
 import {Command} from '../@command';
 import {ScriptOptions, ensureAccessToken, invoke, pack} from '../@core';
@@ -16,8 +17,42 @@ export class Deploy extends Command {
     } = this;
 
     const {
-      flags: {debug, run, 'dry-run': dryRun},
+      flags: {debug, run, 'dry-run': dryRun, force},
     } = await this.parse(Deploy);
+
+    if (!force) {
+      if (!debug) {
+        console.info(
+          '部署后将覆盖线上脚本，使用 --debug 选项可部署到调试环境。',
+        );
+
+        const {confirmed} = await prompts({
+          type: 'confirm',
+          name: 'confirmed',
+          message: '确认继续？',
+          initial: false,
+        });
+
+        if (!confirmed) {
+          this.exit();
+        }
+      }
+
+      if (debug && run && !dryRun) {
+        console.info('在未指定 --dry-run 的情况下，调试环境同样会发出消息。');
+
+        const {confirmed} = await prompts({
+          type: 'confirm',
+          name: 'confirmed',
+          message: '确认继续？',
+          initial: false,
+        });
+
+        if (!confirmed) {
+          this.exit();
+        }
+      }
+    }
 
     const {dss = {}} = require(Path.resolve('package.json'));
 
@@ -51,5 +86,6 @@ export class Deploy extends Command {
     }),
     run: Flags.boolean(),
     'dry-run': Flags.boolean(),
+    force: Flags.boolean(),
   };
 }

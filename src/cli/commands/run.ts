@@ -1,4 +1,5 @@
 import {Flags} from '@oclif/core';
+import prompts from 'prompts';
 
 import {Command} from '../@command';
 import {ensureAccessToken, invoke} from '../@core';
@@ -8,8 +9,25 @@ export class Run extends Command {
     const {entrances} = this;
 
     const {
-      flags: {debug, 'dry-run': dryRun},
+      flags: {debug, 'dry-run': dryRun, force},
     } = await this.parse(Run);
+
+    if (!force) {
+      if (debug && !dryRun) {
+        console.info('在未指定 --dry-run 的情况下，调试环境同样会发出消息。');
+
+        const {confirmed} = await prompts({
+          type: 'confirm',
+          name: 'confirmed',
+          message: '确认继续？',
+          initial: false,
+        });
+
+        if (!confirmed) {
+          this.exit();
+        }
+      }
+    }
 
     await ensureAccessToken(entrances);
 
@@ -25,5 +43,6 @@ export class Run extends Command {
       description: '触发部署到调试环境的脚本',
     }),
     'dry-run': Flags.boolean(),
+    force: Flags.boolean(),
   };
 }
