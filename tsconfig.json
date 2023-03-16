@@ -7,6 +7,9 @@
       "path": "src/library/tsconfig.esm.json"
     },
     {
+      "path": "src/x"
+    },
+    {
       "path": "src/test"
     },
     {

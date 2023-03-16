@@ -11,6 +11,11 @@
         "module": ["cjs", "esm"]
       },
       {
+        "name": "x",
+        "type": "library",
+        "module": ["esm"]
+      },
+      {
         "name": "test",
         "references": ["library"]
       },

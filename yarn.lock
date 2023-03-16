@@ -704,10 +704,10 @@ enhanced-resolve@^5.12.0, enhanced-resolve@^5.9.2:
     graceful-fs "^4.2.4"
     tapable "^2.2.0"
 
-entrance-decorator@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/entrance-decorator/-/entrance-decorator-0.2.1.tgz#3a72948eaa84ca6e75ddb86995bacc496988a9c4"
-  integrity sha512-9MzF3D0YEb28S1w7/eiNhIJ7uVAskLrCLHMBopP72tkWPfXAvQCVF4YcswdcgwZx5APnS84hlmO+P7K5fOo3AA==
+entrance-decorator@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/entrance-decorator/-/entrance-decorator-0.2.2.tgz#745d30d03615e17a559a0a28feb91362c6f6a2af"
+  integrity sha512-hulfMSg+MOVrAsi8GWklkXl2K0/5GG3sF4nokkhabdcdS10i8P6RucP4g4DKSS09KuF4xydIBMkyBg53P5yTbg==
   dependencies:
     tslib "^2.5.0"
 

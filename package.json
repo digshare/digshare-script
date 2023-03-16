@@ -4,9 +4,15 @@
   "license": "MIT",
   "author": "Chengdu Enverse Technology Co., Ltd.",
   "exports": {
-    "types": "./bld/library/cjs/index.d.ts",
-    "import": "./bld/library/esm/index.js",
-    "require": "./bld/library/cjs/index.js"
+    ".": {
+      "types": "./bld/library/cjs/index.d.ts",
+      "import": "./bld/library/esm/index.js",
+      "require": "./bld/library/cjs/index.js"
+    },
+    "./x": {
+      "types": "./bld/x/index.d.ts",
+      "import": "./bld/x/index.js"
+    }
   },
   "bin": {
     "dss": "./bin/run"
@@ -35,7 +41,7 @@
     "@types/prompts": "^2.4.3",
     "chalk": "4",
     "enhanced-resolve": "^5.12.0",
-    "entrance-decorator": "^0.2.1",
+    "entrance-decorator": "^0.2.2",
     "ms": "^2.1.3",
     "open": "^8.4.2",
     "prompts": "^2.4.2",

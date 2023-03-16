@@ -1,6 +1,8 @@
 *
 !/src/library/**/*.{ts,tsx}
 !/bld/library/**
+!/src/x/**/*.{ts,tsx}
+!/bld/x/**
 !/src/cli/**/*.{ts,tsx}
 !/bld/cli/**
 *.tsbuildinfo
