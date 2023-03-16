@@ -28,7 +28,7 @@ export class Script<TState> {
     this.dryRun = dryRun;
   }
 
-  async run({state}: ScriptRunOptions<TState>): Promise<void> {
+  async run({state}: ScriptRunOptions<TState>): Promise<TState | void> {
     const {program} = this;
 
     const messages = program(state);
