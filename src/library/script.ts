@@ -1,16 +1,27 @@
+import * as x from 'x-value';
+
 import {API} from './api';
 
-export interface ScriptMessage<TState> {
+export const ScriptMessage = x.object({
+  title: x.string.optional(),
+  content: x.string,
+});
+
+export interface ScriptMessage {
   title?: string;
   content: string;
+}
+
+export interface ScriptUpdate<TState> {
+  message?: ScriptMessage | string;
   state?: TState;
 }
 
 export type ScriptProgram<TState> = (
   state: TState | undefined,
 ) =>
-  | Promise<ScriptMessage<TState> | void>
-  | AsyncGenerator<ScriptMessage<TState>, void>;
+  | Promise<ScriptUpdate<TState> | void>
+  | AsyncGenerator<ScriptUpdate<TState>, void>;
 
 export class Script<TState> {
   private api: API | undefined;
@@ -31,41 +42,53 @@ export class Script<TState> {
   async run({state}: ScriptRunOptions<TState>): Promise<TState | void> {
     const {program} = this;
 
-    const messages = program(state);
+    const updates = program(state);
 
-    if (!messages) {
+    if (!updates) {
       return;
     }
 
-    if (messages instanceof Promise) {
-      const message = await messages;
+    if (updates instanceof Promise) {
+      const update = await updates;
 
-      if (message) {
-        await this.publishMessage(message);
+      if (update) {
+        await this.update(update);
       }
-    } else if ((messages as any)[Symbol.toStringTag] === 'AsyncGenerator') {
-      for await (const message of messages) {
-        await this.publishMessage(message);
+    } else if ((updates as any)[Symbol.toStringTag] === 'AsyncGenerator') {
+      for await (const update of updates) {
+        await this.update(update);
       }
     } else {
       throw new Error('无效的脚本返回值');
     }
   }
 
-  private async publishMessage(message: ScriptMessage<TState>): Promise<void> {
+  private async update({message, state}: ScriptUpdate<TState>): Promise<void> {
     const {api, dryRun} = this;
 
     if (!api) {
       throw new Error('API 未配置');
     }
 
-    console.info('发布消息', message);
+    if (message) {
+      if (typeof message === 'string') {
+        message = {content: message};
+      }
+
+      console.info('发布消息', message);
+    }
+
+    if (state !== undefined) {
+      console.info('更新状态', state);
+    }
 
     if (dryRun) {
       return;
     }
 
-    await api.call('/v2/channel/publish-message', message);
+    if (message || state !== undefined) {
+      await api.call('/v2/channel/script-update', {message, state});
+    }
   }
 }
 

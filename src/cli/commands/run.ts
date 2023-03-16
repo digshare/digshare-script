@@ -36,7 +36,7 @@ export class Run extends Command {
     this.exit();
   }
 
-  static override description = '执行脚本。';
+  static override description = '执行线上脚本。';
 
   static override flags = {
     debug: Flags.boolean({
