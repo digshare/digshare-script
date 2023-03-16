@@ -1,11 +1,4 @@
-import * as x from 'x-value';
-
 import {API} from './api';
-
-export const ScriptMessage = x.object({
-  title: x.string.optional(),
-  content: x.string,
-});
 
 export interface ScriptMessage {
   title?: string;

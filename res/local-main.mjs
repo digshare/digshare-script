@@ -2,7 +2,7 @@
 
 import * as FS from 'fs/promises';
 
-import {ScriptMessage, x} from '@digshare/script';
+import {ScriptMessage, x} from '@digshare/script/x';
 
 const STATE_FILE_PATH = new URL('state.json', import.meta.url).pathname;
 
