@@ -24,5 +24,13 @@
     "typescript",
     "typescriptreact"
   ],
-  "cSpell.words": ["digshare", "Enverse", "oclif"]
+  "cSpell.words": [
+    "boilerplates",
+    "digshare",
+    "dssrc",
+    "Enverse",
+    "mufan",
+    "oclif",
+    "undici"
+  ]
 }

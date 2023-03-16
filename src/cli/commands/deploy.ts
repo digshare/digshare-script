@@ -13,7 +13,7 @@ export class Deploy extends Command {
   async run(): Promise<void> {
     const {
       entrances,
-      entrances: {api},
+      entrances: {api, projectDir},
     } = this;
 
     const {
@@ -54,13 +54,17 @@ export class Deploy extends Command {
       }
     }
 
-    const {dss = {}} = require(Path.resolve('package.json'));
+    const {dss = {}} = require(Path.join(projectDir, 'package.json'));
 
     const {schedule} = ScriptOptions.exact().satisfies(dss);
 
     await ensureAccessToken(entrances);
 
-    const code = await pack(process.cwd());
+    console.info('正在打包…');
+
+    const code = await pack(projectDir);
+
+    console.info('正在部署…');
 
     await api.call<{revision: string}>('/v2/script/deploy', {
       debug,

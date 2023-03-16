@@ -6,13 +6,17 @@ import {Flags} from '@oclif/core';
 import {Command} from '../@command';
 import {packLocal} from '../@core';
 
-export class Local extends Command {
+export class LocalRun extends Command {
   async run(): Promise<void> {
     const {
-      flags: {out},
-    } = await this.parse(Local);
+      entrances: {projectDir},
+    } = this;
 
-    const outScript = await packLocal(process.cwd(), Path.resolve(out));
+    const {
+      flags: {out},
+    } = await this.parse(LocalRun);
+
+    const outScript = await packLocal(projectDir, Path.join(projectDir, out));
 
     ChildProcess.spawn(process.argv[0], [outScript], {
       stdio: 'inherit',

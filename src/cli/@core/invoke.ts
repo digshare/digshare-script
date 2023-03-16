@@ -21,7 +21,7 @@ export async function invoke(
     dryRun,
   });
 
-  console.info('调用成功，正在等待日志…');
+  console.info('执行成功，正在等待日志…');
 
   await sleep(INVOKE_POLL_LOGS_INTERVAL);
 

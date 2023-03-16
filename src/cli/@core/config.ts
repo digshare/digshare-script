@@ -1,15 +1,19 @@
 import * as FS from 'fs';
 
-export interface ConfigRaw {
-  accessToken?: string;
+export interface GlobalConfigRaw {
   endpoints?: {
     api?: string;
     auth?: string;
   };
 }
 
+export interface LocalConfigRaw extends GlobalConfigRaw {
+  accessToken?: string;
+}
+
 export class Config {
-  private raw: ConfigRaw;
+  private globalRaw: GlobalConfigRaw;
+  private localRaw: LocalConfigRaw;
 
   accessToken: string | undefined;
 
@@ -18,16 +22,21 @@ export class Config {
     auth: string;
   };
 
-  constructor(readonly path: string) {
-    let raw: ConfigRaw | undefined;
-
+  constructor(
+    readonly globalConfigPath: string,
+    readonly localConfigPath: string,
+  ) {
     try {
-      raw = require(path) as ConfigRaw;
+      this.globalRaw = JSON.parse(FS.readFileSync(globalConfigPath, 'utf8'));
     } catch {
-      raw = {};
+      this.globalRaw = {};
     }
 
-    this.raw = raw;
+    try {
+      this.localRaw = JSON.parse(FS.readFileSync(localConfigPath, 'utf8'));
+    } catch (error) {
+      this.localRaw = {};
+    }
 
     const {
       accessToken,
@@ -35,9 +44,13 @@ export class Config {
         api = 'https://api.dingshao.com',
         auth = 'https://www.dingshao.com',
       } = {},
-    } = raw;
+    } = {
+      ...this.globalRaw,
+      ...this.localRaw,
+    };
 
     this.accessToken = accessToken;
+
     this.endpoints = {
       api,
       auth,
@@ -46,8 +59,11 @@ export class Config {
 
   setAccessToken(accessToken: string): void {
     this.accessToken = accessToken;
-    this.raw.accessToken = accessToken;
+    this.localRaw.accessToken = accessToken;
 
-    FS.writeFileSync(this.path, `${JSON.stringify(this.raw, undefined, 2)}\n`);
+    FS.writeFileSync(
+      this.localConfigPath,
+      `${JSON.stringify(this.localRaw, undefined, 2)}\n`,
+    );
   }
 }
