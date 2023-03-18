@@ -4,6 +4,7 @@
     "composite": true,
     "types": ["node"],
     "experimentalDecorators": true,
+    "rootDir": ".",
     "outDir": "../../bld/cli"
   }
 }

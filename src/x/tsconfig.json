@@ -5,6 +5,7 @@
     "module": "esnext",
     "moduleResolution": "nodenext",
     "types": ["node"],
+    "rootDir": ".",
     "outDir": "../../bld/x"
   }
 }
