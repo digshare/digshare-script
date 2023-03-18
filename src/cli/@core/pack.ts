@@ -20,7 +20,7 @@ const BUILD_OPTIONS = {
   inlineDynamicImports: true,
 };
 
-export async function pack(projectDir: string): Promise<string> {
+export async function pack(projectDir: string, out?: string): Promise<string> {
   const scriptModuleSpecifier = getScriptModuleSpecifier(projectDir);
 
   const build = await rollup({
@@ -37,7 +37,12 @@ export {default} from ${JSON.stringify(scriptModuleSpecifier)};
 
   const {
     output: [{code}],
-  } = await build.generate(BUILD_OPTIONS);
+  } = await (out
+    ? build.write({
+        ...BUILD_OPTIONS,
+        file: out,
+      })
+    : build.generate(BUILD_OPTIONS));
 
   return code;
 }

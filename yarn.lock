@@ -2423,10 +2423,10 @@ wrappy@1:
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-x-value@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/x-value/-/x-value-0.1.10.tgz#54603428483f4ce6f457f58d2c520d67228905bd"
-  integrity sha512-v197PAUh8FlWWn8xVTN1uif45AEGQGQhOFuuQJwLyqP58lzBN2vlhqXvI4aOGjKVfVknlEITg3uKTgoX8cDYXQ==
+x-value@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/x-value/-/x-value-0.1.11.tgz#1899ea08041663714e05bc5135635bebf50ca172"
+  integrity sha512-3yIN6CIcQh3uSRqmCIqr1DRrMo6jpY/iR1Dv+ykqQzKKL7LXvFRyJeZkO73mSyO9N3JUC0IWfWNFSkO5LrnyNQ==
   dependencies:
     lodash.isequal "^4.5.0"
     tslib "^2.5.0"

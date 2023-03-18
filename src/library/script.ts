@@ -1,12 +1,9 @@
+import type {ScriptUpdateMessage} from '@digshare/script/x';
+
 import {API} from './api';
 
-export interface ScriptMessage {
-  title?: string;
-  content: string;
-}
-
 export interface ScriptUpdate<TState> {
-  message?: ScriptMessage | string;
+  message?: ScriptUpdateMessage | string;
   state?: TState;
 }
 
@@ -56,19 +53,22 @@ export class Script<TState> {
     }
   }
 
-  private async update({message, state}: ScriptUpdate<TState>): Promise<void> {
+  private async update({
+    message: updateMessage,
+    state,
+  }: ScriptUpdate<TState>): Promise<void> {
     const {api, dryRun} = this;
 
     if (!api) {
       throw new Error('API 未配置');
     }
 
-    if (message) {
-      if (typeof message === 'string') {
-        message = {content: message};
-      }
+    if (typeof updateMessage === 'string') {
+      updateMessage = {content: updateMessage};
+    }
 
-      console.info('发布消息', message);
+    if (updateMessage) {
+      console.info('发布消息', updateMessage);
     }
 
     if (state !== undefined) {
@@ -79,9 +79,42 @@ export class Script<TState> {
       return;
     }
 
-    if (message || state !== undefined) {
-      await api.call('/v2/channel/script-update', {message, state});
+    if (!updateMessage && state === undefined) {
+      return;
     }
+
+    let message: ScriptMessage | undefined;
+
+    if (updateMessage) {
+      const {title, content, images} = updateMessage;
+
+      let imageURLs: string[] | undefined;
+
+      if (images) {
+        imageURLs = [];
+
+        for (const image of images) {
+          const {url} = await api.call<{url: string}>(
+            '/v2/channel/upload-content-image',
+            {},
+            image,
+          );
+
+          imageURLs.push(url);
+        }
+      }
+
+      message = {
+        title,
+        content,
+        images: imageURLs,
+      };
+    }
+
+    await api.call('/v2/channel/script-update', {
+      message,
+      state,
+    });
   }
 }
 
@@ -97,4 +130,10 @@ export interface ScriptRunOptions<TState> {
 
 export function script<TState>(program: ScriptProgram<TState>): Script<TState> {
   return new Script(program);
+}
+
+export interface ScriptMessage {
+  title: string | undefined;
+  content: string;
+  images: string[] | undefined;
 }

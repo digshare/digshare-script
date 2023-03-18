@@ -4,6 +4,7 @@
     "composite": true,
     "module": "esnext",
     "moduleResolution": "nodenext",
+    "types": ["node"],
     "outDir": "../../bld/x"
   }
 }

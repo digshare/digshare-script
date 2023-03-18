@@ -2,7 +2,7 @@
 
 import * as FS from 'fs/promises';
 
-import {ScriptMessage, x} from '@digshare/script/x';
+import {ScriptUpdateMessage, x} from '@digshare/script/x';
 
 const STATE_FILE_PATH = new URL('state.json', import.meta.url).pathname;
 
@@ -36,6 +36,8 @@ if (updates instanceof Promise) {
   throw new Error('无效的脚本返回值');
 }
 
+process.exit();
+
 async function scriptUpdate({message, state}) {
   if (message) {
     if (typeof message === 'string') {
@@ -44,7 +46,7 @@ async function scriptUpdate({message, state}) {
 
     console.info(
       '发布消息',
-      ScriptMessage.decode(x.extendedJSONValue, message),
+      ScriptUpdateMessage.decode(x.extendedJSONValue, message),
     );
   }
 
