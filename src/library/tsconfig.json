@@ -3,5 +3,10 @@
   "compilerOptions": {
     "composite": true,
     "outDir": "../../bld/library/cjs"
-  }
+  },
+  "references": [
+    {
+      "path": "../x"
+    }
+  ]
 }
