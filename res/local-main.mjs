@@ -22,15 +22,19 @@ if (!updates) {
   process.exit();
 }
 
-if (updates instanceof Promise) {
-  const update = await updates;
+if (typeof updates === 'object') {
+  if (updates instanceof Promise) {
+    const update = await updates;
 
-  if (update) {
-    await scriptUpdate(update);
-  }
-} else if (updates[Symbol.toStringTag] === 'AsyncGenerator') {
-  for await (const update of updates) {
-    await scriptUpdate(update);
+    if (update) {
+      await scriptUpdate(update);
+    }
+  } else if (updates[Symbol.toStringTag] === 'AsyncGenerator') {
+    for await (const update of updates) {
+      await scriptUpdate(update);
+    }
+  } else {
+    await scriptUpdate(updates);
   }
 } else {
   throw new Error('无效的脚本返回值');

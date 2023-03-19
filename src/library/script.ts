@@ -10,6 +10,8 @@ export interface ScriptUpdate<TState> {
 export type ScriptProgram<TState> = (
   state: TState | undefined,
 ) =>
+  | ScriptUpdate<TState>
+  | void
   | Promise<ScriptUpdate<TState> | void>
   | AsyncGenerator<ScriptUpdate<TState>, void>;
 
@@ -38,15 +40,22 @@ export class Script<TState> {
       return;
     }
 
-    if (updates instanceof Promise) {
-      const update = await updates;
+    if (typeof updates === 'object') {
+      if (updates instanceof Promise) {
+        const update = await updates;
 
-      if (update) {
-        await this.update(update);
-      }
-    } else if ((updates as any)[Symbol.toStringTag] === 'AsyncGenerator') {
-      for await (const update of updates) {
-        await this.update(update);
+        if (update) {
+          await this.update(update);
+        }
+      } else if (isObjectAsyncGenerator(updates)) {
+        for await (const update of updates as AsyncGenerator<
+          ScriptUpdate<TState>,
+          void
+        >) {
+          await this.update(update);
+        }
+      } else {
+        await this.update(updates);
       }
     } else {
       throw new Error('无效的脚本返回值');
@@ -136,4 +145,8 @@ export interface ScriptMessage {
   title: string | undefined;
   content: string;
   images: string[] | undefined;
+}
+
+function isObjectAsyncGenerator(object: object): object is AsyncGenerator {
+  return (object as any)[Symbol.toStringTag] === 'AsyncGenerator';
 }

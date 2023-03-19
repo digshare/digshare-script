@@ -3,10 +3,12 @@
 ```ts
 import {script} from '@digshare/script';
 
-export default script(async function* ({data}) {
-  yield {
-    content: '',
-    data,
+export default script(async (state = 0) => {
+  state++;
+
+  return {
+    message: `这是脚本自动发送的第 ${state} 条消息！`,
+    state,
   };
 });
 ```
