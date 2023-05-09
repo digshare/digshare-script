@@ -20,10 +20,6 @@ export class Deploy extends Command {
       flags: {debug, run, 'dry-run': dryRun, 'reset-state': resetState, force},
     } = await this.parse(Deploy);
 
-    if (debug && resetState) {
-      this.error(`--debug 和 --reset-state 不能同时使用！`);
-    }
-
     if (!force) {
       if (!debug) {
         this.log('部署后将覆盖线上脚本，使用 --debug 选项可部署到调试环境。');
