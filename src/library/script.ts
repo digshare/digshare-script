@@ -104,12 +104,12 @@ export class Script<TState> {
 
         for (let image of images) {
           if (typeof image === 'string') {
-            console.info('下载图片', image);
+            console.info('请求图片', image);
 
             const response = await fetch(image);
 
             if (!response.ok) {
-              throw new Error('图片下载失败');
+              throw new Error('图片请求失败');
             }
 
             const type = response.headers.get('content-type');
