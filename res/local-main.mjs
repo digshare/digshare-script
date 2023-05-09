@@ -54,7 +54,17 @@ if (!anyEffect) {
 
 process.exit();
 
-async function scriptUpdate({message, state}) {
+async function scriptUpdate({message, state, ...unknown}) {
+  const unknownKeys = Object.keys(unknown);
+
+  if (unknownKeys.length > 0) {
+    console.warn('未知属性', unknownKeys);
+
+    if (ScriptUpdateMessage.is(unknown)) {
+      console.warn('是否忘记了将消息放在 message 属性中？');
+    }
+  }
+
   if (message) {
     if (typeof message === 'string') {
       message = {content: message};

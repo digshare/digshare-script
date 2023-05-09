@@ -7,7 +7,7 @@ import {Command} from '../@command';
 import {ScriptOptions, ensureAccessToken, invoke, pack} from '../@core';
 import {sleep} from '../@utils';
 
-const DEPLOY_INVOKE_INTERVAL = 1000;
+const DEPLOY_INVOKE_INTERVAL = 3000;
 
 export class Deploy extends Command {
   async run(): Promise<void> {
