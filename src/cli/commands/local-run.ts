@@ -13,16 +13,16 @@ export class LocalRun extends Command {
     } = this;
 
     const {
-      flags: {out},
+      flags: {out, 'reset-state': resetState},
     } = await this.parse(LocalRun);
 
     const outScript = await packLocal(projectDir, Path.join(projectDir, out));
 
-    ChildProcess.spawn(process.argv[0], [outScript], {
-      stdio: 'inherit',
-    }).on('exit', code => {
-      process.exit(code ?? 0);
-    });
+    ChildProcess.spawn(
+      process.argv[0],
+      [outScript, JSON.stringify({resetState})],
+      {stdio: 'inherit'},
+    ).on('exit', code => process.exit(code ?? 0));
 
     await new Promise(() => {});
   }
@@ -30,6 +30,7 @@ export class LocalRun extends Command {
   static override description = '在开发环境中执行脚本（不会实际发送消息）。';
 
   static override flags = {
+    'reset-state': Flags.boolean(),
     out: Flags.string({
       description: '指定本地脚本生成文件夹',
       default: '.local',

@@ -4,6 +4,8 @@ import * as FS from 'fs/promises';
 
 import {ScriptUpdateMessage, x} from '@digshare/script/x';
 
+const {resetState} = JSON.parse(process.argv[2]);
+
 const STATE_FILE_PATH = new URL('state.json', import.meta.url).pathname;
 
 const {program} = script;
@@ -11,9 +13,15 @@ const {program} = script;
 let state;
 
 try {
-  state = JSON.parse(await FS.readFile(STATE_FILE_PATH, 'utf8'));
-} catch {
-  // do nothing
+  if (resetState) {
+    await FS.unlink(STATE_FILE_PATH);
+  } else {
+    state = JSON.parse(await FS.readFile(STATE_FILE_PATH, 'utf8'));
+  }
+} catch (error) {
+  if (error.code !== 'ENOENT') {
+    throw error;
+  }
 }
 
 let anyEffect = false;
