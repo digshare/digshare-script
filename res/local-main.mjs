@@ -16,28 +16,32 @@ try {
   // do nothing
 }
 
+let anyEffect = false;
+
 const updates = program(state);
 
-if (!updates) {
-  process.exit();
-}
+if (updates) {
+  if (typeof updates === 'object') {
+    if (updates instanceof Promise) {
+      const update = await updates;
 
-if (typeof updates === 'object') {
-  if (updates instanceof Promise) {
-    const update = await updates;
-
-    if (update) {
-      await scriptUpdate(update);
-    }
-  } else if (updates[Symbol.toStringTag] === 'AsyncGenerator') {
-    for await (const update of updates) {
-      await scriptUpdate(update);
+      if (update) {
+        await scriptUpdate(update);
+      }
+    } else if (updates[Symbol.toStringTag] === 'AsyncGenerator') {
+      for await (const update of updates) {
+        await scriptUpdate(update);
+      }
+    } else {
+      await scriptUpdate(updates);
     }
   } else {
-    await scriptUpdate(updates);
+    throw new Error('无效的脚本返回值');
   }
-} else {
-  throw new Error('无效的脚本返回值');
+}
+
+if (!anyEffect) {
+  console.info('脚本执行完毕，没有需要发布的消息或更新的状态。');
 }
 
 process.exit();
@@ -52,10 +56,15 @@ async function scriptUpdate({message, state}) {
       '发布消息',
       ScriptUpdateMessage.decode(x.extendedJSONValue, message),
     );
+
+    anyEffect = true;
   }
 
   if (state !== undefined) {
     console.info('更新状态', state);
+
     await FS.writeFile(STATE_FILE_PATH, JSON.stringify(state));
+
+    anyEffect = true;
   }
 }
