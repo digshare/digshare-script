@@ -2,15 +2,18 @@ import {ReadableStream} from 'stream/web';
 
 import * as x from 'x-value';
 
-const Image = x.unknown.refined<never, ArrayBuffer | Blob | ReadableStream>(
-  value =>
-    x.refinement(
+const Image = x.unknown.refined<
+  never,
+  string | ArrayBuffer | Blob | ReadableStream
+>(value =>
+  x.refinement(
+    typeof value === 'string' ||
       value instanceof ArrayBuffer ||
-        value instanceof Blob ||
-        value instanceof ReadableStream,
-      value,
-      '图片必须是 ArrayBuffer、Blob 或 ReadableStream',
-    ),
+      value instanceof Blob ||
+      value instanceof ReadableStream,
+    value,
+    '图片必须是链接字符串、ArrayBuffer、Blob 或 ReadableStream',
+  ),
 );
 
 export const ScriptUpdateMessage = x.object({

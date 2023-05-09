@@ -102,7 +102,25 @@ export class Script<TState> {
       if (images) {
         imageURLs = [];
 
-        for (const image of images) {
+        for (let image of images) {
+          if (typeof image === 'string') {
+            console.info('下载图片', image);
+
+            const response = await fetch(image);
+
+            if (!response.ok) {
+              throw new Error('图片下载失败');
+            }
+
+            const type = response.headers.get('content-type');
+
+            if (!type || !type.startsWith('image/')) {
+              throw new Error('无效的图片类型');
+            }
+
+            image = response.body!;
+          }
+
           const {url} = await api.call<{url: string}>(
             '/v2/channel/upload-content-image',
             {},
