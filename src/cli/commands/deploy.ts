@@ -17,14 +17,16 @@ export class Deploy extends Command {
     } = this;
 
     const {
-      flags: {debug, run, 'dry-run': dryRun, force},
+      flags: {debug, run, 'dry-run': dryRun, 'reset-state': resetState, force},
     } = await this.parse(Deploy);
+
+    if (debug && resetState) {
+      this.error(`--debug 和 --reset-state 不能同时使用！`);
+    }
 
     if (!force) {
       if (!debug) {
-        console.info(
-          '部署后将覆盖线上脚本，使用 --debug 选项可部署到调试环境。',
-        );
+        this.log('部署后将覆盖线上脚本，使用 --debug 选项可部署到调试环境。');
 
         const {confirmed} = await prompts({
           type: 'confirm',
@@ -39,7 +41,7 @@ export class Deploy extends Command {
       }
 
       if (debug && run && !dryRun) {
-        console.info('在未指定 --dry-run 的情况下，调试环境同样会发出消息。');
+        this.log('在未指定 --dry-run 的情况下，调试环境同样会发出消息。');
 
         const {confirmed} = await prompts({
           type: 'confirm',
@@ -60,19 +62,20 @@ export class Deploy extends Command {
 
     await ensureAccessToken(entrances);
 
-    console.info('正在打包…');
+    this.log('正在打包…');
 
     const code = await pack(projectDir);
 
-    console.info('正在部署…');
+    this.log('正在部署…');
 
     await api.call<{revision: string}>('/v2/script/deploy', {
       debug,
       script: code,
       schedule,
+      resetState,
     });
 
-    console.info('部署成功！');
+    this.log('部署成功！');
 
     if (run || dryRun) {
       await sleep(DEPLOY_INVOKE_INTERVAL);
@@ -90,6 +93,7 @@ export class Deploy extends Command {
     }),
     run: Flags.boolean(),
     'dry-run': Flags.boolean(),
+    'reset-state': Flags.boolean(),
     force: Flags.boolean(),
   };
 }

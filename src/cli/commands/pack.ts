@@ -15,11 +15,11 @@ export class Pack extends Command {
       flags: {out},
     } = await this.parse(Pack);
 
-    console.info('正在打包…');
+    this.log('正在打包…');
 
     await pack(projectDir, Path.join(projectDir, out));
 
-    console.info('打包成功！');
+    this.log('打包成功！');
 
     this.exit();
   }

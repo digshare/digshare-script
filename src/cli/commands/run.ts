@@ -14,7 +14,7 @@ export class Run extends Command {
 
     if (!force) {
       if (debug && !dryRun) {
-        console.info('在未指定 --dry-run 的情况下，调试环境同样会发出消息。');
+        this.log('在未指定 --dry-run 的情况下，调试环境同样会发出消息。');
 
         const {confirmed} = await prompts({
           type: 'confirm',
