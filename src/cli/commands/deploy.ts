@@ -17,7 +17,14 @@ export class Deploy extends Command {
     } = this;
 
     const {
-      flags: {debug, run, 'dry-run': dryRun, 'reset-state': resetState, force},
+      flags: {
+        minify,
+        debug,
+        run,
+        'dry-run': dryRun,
+        'reset-state': resetState,
+        force,
+      },
     } = await this.parse(Deploy);
 
     if (!force) {
@@ -60,7 +67,7 @@ export class Deploy extends Command {
 
     this.log('正在打包…');
 
-    const code = await pack(projectDir);
+    const code = await pack(projectDir, {minify});
 
     this.log('正在部署…');
 
@@ -84,6 +91,7 @@ export class Deploy extends Command {
   static override description = '将脚本打包部署到盯梢提供的托管环境。';
 
   static override flags = {
+    minify: Flags.boolean(),
     debug: Flags.boolean({
       description: '部署到调试环境',
     }),

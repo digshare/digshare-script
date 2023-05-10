@@ -12,14 +12,17 @@ export class Pack extends Command {
     } = this;
 
     const {
-      flags: {out},
+      flags: {out, minify},
     } = await this.parse(Pack);
 
     this.log('正在打包…');
 
-    await pack(projectDir, Path.join(projectDir, out));
+    const path = Path.join(projectDir, out);
+
+    await pack(projectDir, {out: path, minify});
 
     this.log('打包成功！');
+    this.log('文件路径', Path.relative(projectDir, path));
 
     this.exit();
   }
@@ -31,5 +34,6 @@ export class Pack extends Command {
       description: '打包后的文件路径',
       default: 'out/script.mjs',
     }),
+    minify: Flags.boolean(),
   };
 }
