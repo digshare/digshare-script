@@ -3,6 +3,7 @@
 import * as FS from 'fs/promises';
 
 import {ScriptUpdateMessage, x} from '@digshare/script/x';
+import {isGeneratorObject} from 'util/types';
 
 const {resetState} = JSON.parse(process.argv[2]);
 
@@ -36,7 +37,7 @@ if (updates) {
       if (update) {
         await scriptUpdate(update);
       }
-    } else if (updates[Symbol.toStringTag] === 'AsyncGenerator') {
+    } else if (isGeneratorObject(updates)) {
       for await (const update of updates) {
         await scriptUpdate(update);
       }

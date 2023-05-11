@@ -1,3 +1,5 @@
+import {isGeneratorObject} from 'util/types';
+
 import type {ScriptUpdateMessage} from '@digshare/script/x';
 
 import {API} from './api';
@@ -13,7 +15,8 @@ export type ScriptProgram<TState> = (
   | ScriptUpdate<TState>
   | void
   | Promise<ScriptUpdate<TState> | void>
-  | AsyncGenerator<ScriptUpdate<TState>, void>;
+  | Generator<ScriptUpdate<TState>, void, void>
+  | AsyncGenerator<ScriptUpdate<TState>, void, void>;
 
 export class Script<TState> {
   private api: API | undefined;
@@ -47,11 +50,14 @@ export class Script<TState> {
         if (update) {
           await this.update(update);
         }
-      } else if (isObjectAsyncGenerator(updates)) {
-        for await (const update of updates as AsyncGenerator<
-          ScriptUpdate<TState>,
-          void
-        >) {
+      } else if (
+        (
+          isGeneratorObject as (
+            object: unknown,
+          ) => object is Generator | AsyncGenerator
+        )(updates)
+      ) {
+        for await (const update of updates) {
           await this.update(update);
         }
       } else {
@@ -163,8 +169,4 @@ export interface ScriptMessage {
   title: string | undefined;
   content: string;
   images: string[] | undefined;
-}
-
-function isObjectAsyncGenerator(object: object): object is AsyncGenerator {
-  return (object as any)[Symbol.toStringTag] === 'AsyncGenerator';
 }
