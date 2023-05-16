@@ -1,8 +1,11 @@
 {
   "name": "@digshare/script",
-  "version": "0.0.0",
+  "version": "0.4.0",
   "license": "MIT",
   "author": "Chengdu Enverse Technology Co., Ltd.",
+  "publishConfig": {
+    "tag": "next"
+  },
   "exports": {
     ".": {
       "types": "./bld/library/cjs/index.d.ts",
