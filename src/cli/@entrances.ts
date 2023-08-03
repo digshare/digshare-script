@@ -5,7 +5,10 @@ import {entrance} from 'entrance-decorator';
 import {API, Config} from './@core';
 
 export class Entrances {
-  constructor(readonly configDir: string, readonly projectDir: string) {}
+  constructor(
+    readonly configDir: string,
+    readonly projectDir: string,
+  ) {}
 
   /* eslint-disable @mufan/explicit-return-type */
 

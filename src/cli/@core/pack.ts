@@ -12,10 +12,7 @@ import {rollup} from 'rollup';
 
 const VIRTUAL_ENTRY_NAME = './__entry.js';
 
-const LOCAL_MAIN_FILE_PATH = Path.join(
-  __dirname,
-  '../../../res/local-main.mjs',
-);
+const LOCAL_MAIN_FILE_PATH = Path.join(__dirname, '../../../res/local-main.js');
 
 function ROLLUP(entryCode: string, minify: boolean): Promise<RollupBuild> {
   return rollup({

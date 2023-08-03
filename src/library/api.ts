@@ -3,7 +3,10 @@ import {ReadableStream} from 'stream/web';
 import type {Response} from 'undici';
 
 export class API {
-  constructor(readonly endpoint: string, readonly accessToken: string) {}
+  constructor(
+    readonly endpoint: string,
+    readonly accessToken: string,
+  ) {}
 
   async call<TReturn extends object>(
     path: string,
