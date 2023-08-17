@@ -1,4 +1,4 @@
-import * as FS from 'fs';
+import * as FS from 'fs/promises';
 import * as Path from 'path';
 
 import commonjs from '@rollup/plugin-commonjs';
@@ -71,11 +71,13 @@ export async function packLocal(
 ): Promise<string> {
   const scriptModuleSpecifier = getScriptModuleSpecifier(projectDir);
 
+  const mainFileContent = await FS.readFile(LOCAL_MAIN_FILE_PATH, 'utf8');
+
   const build = await ROLLUP(
     `\
 import script from ${JSON.stringify(scriptModuleSpecifier)};
 
-${FS.readFileSync(LOCAL_MAIN_FILE_PATH, 'utf8')}`,
+${mainFileContent}`,
     false,
   );
 

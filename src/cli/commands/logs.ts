@@ -12,9 +12,9 @@ export class Logs extends Command {
       flags: {debug, last},
     } = await this.parse(Logs);
 
-    const startTime = last ? new Date(Date.now() - ms(last)) : undefined;
-
     await ensureAccessToken(entrances);
+
+    const startTime = last ? new Date(Date.now() - ms(last)) : undefined;
 
     for await (const event of pollLogs(entrances, {debug, startTime})) {
       printLogEvent(event);

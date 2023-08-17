@@ -24,7 +24,7 @@ export class Config {
 
   constructor(
     readonly globalConfigPath: string,
-    readonly localConfigPath: string,
+    readonly localConfigPath: string | undefined,
   ) {
     try {
       this.globalRaw = JSON.parse(FS.readFileSync(globalConfigPath, 'utf8'));
@@ -33,7 +33,10 @@ export class Config {
     }
 
     try {
-      this.localRaw = JSON.parse(FS.readFileSync(localConfigPath, 'utf8'));
+      this.localRaw =
+        localConfigPath === undefined
+          ? {}
+          : JSON.parse(FS.readFileSync(localConfigPath, 'utf8'));
     } catch (error) {
       this.localRaw = {};
     }
@@ -61,9 +64,11 @@ export class Config {
     this.accessToken = accessToken;
     this.localRaw.accessToken = accessToken;
 
-    FS.writeFileSync(
-      this.localConfigPath,
-      `${JSON.stringify(this.localRaw, undefined, 2)}\n`,
-    );
+    if (this.localConfigPath !== undefined) {
+      FS.writeFileSync(
+        this.localConfigPath,
+        `${JSON.stringify(this.localRaw, undefined, 2)}\n`,
+      );
+    }
   }
 }

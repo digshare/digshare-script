@@ -8,7 +8,7 @@ import {pack} from '../@core';
 export class Pack extends Command {
   async run(): Promise<void> {
     const {
-      entrances: {projectDir},
+      entrances: {workingDir},
     } = this;
 
     const {
@@ -17,12 +17,12 @@ export class Pack extends Command {
 
     this.log('正在打包…');
 
-    const path = Path.join(projectDir, out);
+    const path = Path.join(workingDir, out);
 
-    await pack(projectDir, {out: path, minify});
+    await pack(workingDir, {out: path, minify});
 
     this.log('打包成功！');
-    this.log('文件路径', Path.relative(projectDir, path));
+    this.log('文件路径', Path.relative(workingDir, path));
 
     this.exit();
   }

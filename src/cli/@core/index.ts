@@ -5,3 +5,4 @@ export * from './script';
 export * from './connect';
 export * from './log';
 export * from './invoke';
+export * from './legacy';

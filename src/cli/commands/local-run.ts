@@ -9,14 +9,14 @@ import {packLocal} from '../@core';
 export class LocalRun extends Command {
   async run(): Promise<void> {
     const {
-      entrances: {projectDir},
+      entrances: {workingDir},
     } = this;
 
     const {
       flags: {out, 'reset-state': resetState},
     } = await this.parse(LocalRun);
 
-    const outScript = await packLocal(projectDir, Path.join(projectDir, out));
+    const outScript = await packLocal(workingDir, Path.join(workingDir, out));
 
     ChildProcess.spawn(
       process.argv[0],

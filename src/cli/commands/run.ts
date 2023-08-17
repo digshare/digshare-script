@@ -12,6 +12,8 @@ export class Run extends Command {
       flags: {debug, 'dry-run': dryRun, force},
     } = await this.parse(Run);
 
+    await ensureAccessToken(entrances);
+
     if (!force) {
       if (debug && !dryRun) {
         this.log('在未指定 --dry-run 的情况下，调试环境同样会发出消息。');
@@ -28,8 +30,6 @@ export class Run extends Command {
         }
       }
     }
-
-    await ensureAccessToken(entrances);
 
     await invoke(entrances, {debug, dryRun});
 

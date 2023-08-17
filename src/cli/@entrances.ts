@@ -7,16 +7,23 @@ import {API, Config} from './@core';
 export class Entrances {
   constructor(
     readonly configDir: string,
-    readonly projectDir: string,
+    private projectDir: string | undefined,
   ) {}
 
   /* eslint-disable @mufan/explicit-return-type */
 
   @entrance
+  get workingDir() {
+    return this.projectDir ?? process.cwd();
+  }
+
+  @entrance
   get config() {
     return new Config(
       Path.join(this.configDir, 'config.json'),
-      Path.join(this.projectDir, '.dssrc'),
+      this.projectDir === undefined
+        ? undefined
+        : Path.join(this.projectDir, '.dssrc'),
     );
   }
 
