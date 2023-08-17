@@ -5,9 +5,6 @@
   "repository": "https://github.com/digshare/digshare-script.git",
   "license": "MIT",
   "author": "Chengdu Enverse Technology Co., Ltd.",
-  "publishConfig": {
-    "tag": "next"
-  },
   "exports": {
     ".": {
       "types": "./bld/library/cjs/index.d.ts",
