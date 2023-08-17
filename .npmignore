@@ -5,4 +5,5 @@
 !/bld/x/**
 !/src/cli/**/*.{ts,tsx}
 !/bld/cli/**
+!/res/**
 *.tsbuildinfo

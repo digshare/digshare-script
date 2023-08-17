@@ -95,7 +95,11 @@ function getScriptModuleSpecifier(projectDir: string): string {
   const {name: scriptPackageName} = require(Path.join(
     projectDir,
     'package.json',
-  ));
+  )) as {name: string | undefined};
+
+  if (typeof scriptPackageName !== 'string') {
+    throw new Error('项目 package.json 中未配置 name 字段。');
+  }
 
   return resolve.sync(projectDir, scriptPackageName) as string;
 }
