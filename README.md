@@ -1,18 +1,5 @@
 # 盯梢 {script}
 
-```ts
-import {script} from '@digshare/script';
+为了方便频道主使用脚本发掘消息，盯梢提供了简洁明了的开发接口，频道主可以一键将脚本部署到云端，实现定时自动执行。
 
-export default script(async (state = 0) => {
-  state++;
-
-  return {
-    message: `这是脚本自动发送的第 ${state} 条消息！`,
-    state,
-  };
-});
-```
-
-## License
-
-MIT License.
+[脚本文档](https://docs.dingshao.cn/script)
