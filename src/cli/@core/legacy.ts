@@ -10,7 +10,7 @@ export interface RetrieveLegacyOptions {
 export async function retrieveLegacy(
   {api}: Entrances,
   {out}: RetrieveLegacyOptions,
-): Promise<boolean> {
+): Promise<string[] | false> {
   const {content} = await api.call<{content: Record<string, string> | false}>(
     '/v2/script/retrieve-legacy-script',
     {},
@@ -22,9 +22,15 @@ export async function retrieveLegacy(
 
   await FS.mkdir(out, {recursive: true});
 
+  const paths: string[] = [];
+
   for (const [name, text] of Object.entries(content)) {
-    await FS.writeFile(Path.join(out, name), text);
+    const path = Path.join(out, name);
+
+    await FS.writeFile(path, text);
+
+    paths.push(path);
   }
 
-  return true;
+  return paths;
 }

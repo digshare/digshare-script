@@ -25,7 +25,9 @@ export class RetrieveLegacy extends ProjectIndependentCommand {
     const saved = await retrieveLegacy(entrances, {out: path});
 
     if (saved) {
-      this.log('保存成功！');
+      for (const path of saved) {
+        this.log('已保存文件', Path.relative(workingDir, path));
+      }
     } else {
       this.log('当前项目没有旧版线上编辑器编写的脚本。');
     }
