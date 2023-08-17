@@ -3,8 +3,11 @@
   "boilerplate": "@mufan/code-boilerplates/typescript",
   "options": {
     "name": "@digshare/script",
+    "description": "DigShare Script SDK",
+    "repository": "https://github.com/digshare/digshare-script.git",
     "license": "MIT",
     "author": "Chengdu Enverse Technology Co., Ltd.",
+    "packageManager": "pnpm",
     "projects": [
       {
         "name": "library",
