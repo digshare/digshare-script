@@ -44,8 +44,8 @@ export class Config {
     const {
       accessToken,
       endpoints: {
-        api = 'https://api.dingshao.com',
-        auth = 'https://www.dingshao.com',
+        api = 'https://api.dingshao.cn',
+        auth = 'https://www.dingshao.cn',
       } = {},
     } = {
       ...this.globalRaw,
