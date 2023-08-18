@@ -5,24 +5,41 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
+import typescript from '@rollup/plugin-typescript';
 import virtual from '@rollup/plugin-virtual';
 import resolve from 'enhanced-resolve';
-import type {RollupBuild} from 'rollup';
+import findUp from 'find-up';
+import type {OutputOptions, RollupBuild} from 'rollup';
 import {rollup} from 'rollup';
 
 const VIRTUAL_ENTRY_NAME = './__entry.js';
 
 const LOCAL_MAIN_FILE_PATH = Path.join(__dirname, '../../../res/local-main.js');
 
-function ROLLUP(entryCode: string, minify: boolean): Promise<RollupBuild> {
+function ROLLUP({
+  tsconfig,
+  code,
+  minify,
+}: {
+  tsconfig: string | undefined;
+  code: string;
+  minify: boolean;
+}): Promise<RollupBuild> {
   return rollup({
     input: VIRTUAL_ENTRY_NAME,
     plugins: [
       virtual({
-        [VIRTUAL_ENTRY_NAME]: entryCode,
+        [VIRTUAL_ENTRY_NAME]: code,
       }),
       nodeResolve({
         preferBuiltins: true,
+      }),
+      typescript({
+        tsconfig,
+        compilerOptions: {
+          sourceMap: false,
+        },
+        outputToFilesystem: false,
       }),
       commonjs(),
       json(),
@@ -31,7 +48,7 @@ function ROLLUP(entryCode: string, minify: boolean): Promise<RollupBuild> {
   });
 }
 
-const BUILD_OPTIONS = {
+const BUILD_OPTIONS: OutputOptions = {
   inlineDynamicImports: true,
 };
 
@@ -44,14 +61,15 @@ export async function pack(
   projectDir: string,
   {out, minify = false}: PackOptions = {},
 ): Promise<string> {
-  const scriptModuleSpecifier = getScriptModuleSpecifier(projectDir);
+  const [scriptModulePath, tsconfig] = getScriptModule(projectDir);
 
-  const build = await ROLLUP(
-    `\
-export {default} from ${JSON.stringify(scriptModuleSpecifier)};
+  const build = await ROLLUP({
+    code: `\
+export {default} from ${JSON.stringify(scriptModulePath)};
 `,
     minify,
-  );
+    tsconfig,
+  });
 
   const {
     output: [{code}],
@@ -69,17 +87,18 @@ export async function packLocal(
   projectDir: string,
   outDir: string,
 ): Promise<string> {
-  const scriptModuleSpecifier = getScriptModuleSpecifier(projectDir);
+  const [scriptModulePath, tsconfig] = getScriptModule(projectDir);
 
   const mainFileContent = await FS.readFile(LOCAL_MAIN_FILE_PATH, 'utf8');
 
-  const build = await ROLLUP(
-    `\
-import script from ${JSON.stringify(scriptModuleSpecifier)};
+  const build = await ROLLUP({
+    code: `\
+import script from ${JSON.stringify(scriptModulePath)};
 
 ${mainFileContent}`,
-    false,
-  );
+    minify: false,
+    tsconfig,
+  });
 
   const outScript = Path.join(outDir, 'script.mjs');
 
@@ -91,7 +110,9 @@ ${mainFileContent}`,
   return outScript;
 }
 
-function getScriptModuleSpecifier(projectDir: string): string {
+function getScriptModule(
+  projectDir: string,
+): [path: string, tsconfig: string | undefined] {
   const {name: scriptPackageName} = require(Path.join(
     projectDir,
     'package.json',
@@ -101,5 +122,11 @@ function getScriptModuleSpecifier(projectDir: string): string {
     throw new Error('项目 package.json 中未配置 name 字段。');
   }
 
-  return resolve.sync(projectDir, scriptPackageName) as string;
+  const path = resolve.sync(projectDir, scriptPackageName) as string;
+
+  return [path, getTSConfig(path)];
+}
+
+function getTSConfig(path: string): string | undefined {
+  return findUp.sync('tsconfig.json', {cwd: Path.dirname(path)});
 }
