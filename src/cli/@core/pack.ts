@@ -34,13 +34,14 @@ function ROLLUP({
       nodeResolve({
         preferBuiltins: true,
       }),
-      typescript({
-        tsconfig,
-        compilerOptions: {
-          sourceMap: false,
-        },
-        outputToFilesystem: false,
-      }),
+      tsconfig !== undefined &&
+        typescript({
+          tsconfig,
+          compilerOptions: {
+            sourceMap: false,
+          },
+          outputToFilesystem: false,
+        }),
       commonjs(),
       json(),
       minify && terser(),
@@ -124,7 +125,16 @@ function getScriptModule(
 
   const path = resolve.sync(projectDir, scriptPackageName) as string;
 
-  return [path, getTSConfig(path)];
+  let tsconfig = getTSConfig(path);
+
+  if (
+    tsconfig !== undefined &&
+    Path.relative(projectDir, tsconfig).startsWith(`..${Path.sep}`)
+  ) {
+    tsconfig = undefined;
+  }
+
+  return [path, tsconfig];
 }
 
 function getTSConfig(path: string): string | undefined {
