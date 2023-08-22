@@ -101,7 +101,7 @@ export class Script<TState> {
     let message: ScriptMessage | undefined;
 
     if (updateMessage) {
-      const {title, content, images} = updateMessage;
+      const {tags, title, content, images} = updateMessage;
 
       let imageURLs: string[] | undefined;
 
@@ -138,6 +138,7 @@ export class Script<TState> {
       }
 
       message = {
+        tags,
         title,
         content,
         images: imageURLs,
@@ -166,6 +167,7 @@ export function script<TState>(program: ScriptProgram<TState>): Script<TState> {
 }
 
 export interface ScriptMessage {
+  tags: string[] | undefined;
   title: string | undefined;
   content: string;
   images: string[] | undefined;

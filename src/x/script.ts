@@ -17,6 +17,7 @@ const Image = x.unknown.refined<
 );
 
 export const ScriptUpdateMessage = x.object({
+  tags: x.array(x.string).optional(),
   title: x.string.optional(),
   content: x.string,
   images: x.array(Image).optional(),
