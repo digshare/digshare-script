@@ -1,13 +1,14 @@
 /* global script */
 
 import * as FS from 'fs/promises';
+import {fileURLToPath} from 'url';
 
 import {ScriptUpdateMessage, x} from '@digshare/script/x';
 import {isGeneratorObject} from 'util/types';
 
 const {resetState} = JSON.parse(process.argv[2]);
 
-const STATE_FILE_PATH = new URL('state.json', import.meta.url).pathname;
+const STATE_FILE_PATH = fileURLToPath(new URL('state.json', import.meta.url));
 
 const {program} = script;
 
