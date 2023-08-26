@@ -96,6 +96,8 @@ export async function packLocal(
     code: `\
 import script from ${JSON.stringify(scriptModulePath)};
 
+const PROJECT_DIR = ${JSON.stringify(projectDir)};
+
 ${mainFileContent}`,
     minify: false,
     tsconfig,

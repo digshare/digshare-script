@@ -1,6 +1,7 @@
-/* global script */
+/* global script, PROJECT_DIR */
 
 import * as FS from 'fs/promises';
+import * as Path from 'path';
 import {fileURLToPath} from 'url';
 
 import {ScriptUpdateMessage, x} from '@digshare/script/x';
@@ -81,7 +82,7 @@ async function scriptUpdate({message, state, ...unknown}) {
   }
 
   if (state !== undefined) {
-    console.info('更新状态', state);
+    console.info('更新状态', Path.relative(PROJECT_DIR, STATE_FILE_PATH));
 
     await FS.writeFile(STATE_FILE_PATH, JSON.stringify(state));
 
