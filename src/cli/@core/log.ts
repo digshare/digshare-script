@@ -82,7 +82,8 @@ export function printLogEvent({
 
   // eslint-disable-next-line no-console
   console[level === 'runtime' ? 'info' : level](
-    color(`[${new Date(timestamp).toISOString()}]`),
+    // https://stackoverflow.com/a/58633651/783653
+    color(`[${new Date(timestamp).toLocaleString('sv')}]`),
     message,
   );
 }
