@@ -9,15 +9,29 @@ export class Logs extends Command {
     const {entrances} = this;
 
     const {
-      flags: {debug, last},
+      flags: {debug, last, level},
     } = await this.parse(Logs);
 
     await ensureAccessToken(entrances);
 
     const startTime = last ? new Date(Date.now() - ms(last)) : undefined;
 
+    const levels = ['debug', 'info', 'warn', 'error'];
+
+    const levelIndex = levels.indexOf(level.toLowerCase());
+
+    if (levelIndex < 0) {
+      throw new Error(`无效的 level: ${level}。`);
+    }
+
+    levels.splice(0, levelIndex);
+
+    const levelSet = new Set([...levels, 'runtime']);
+
     for await (const event of pollLogs(entrances, {debug, startTime})) {
-      printLogEvent(event);
+      if (levelSet.has(event.level)) {
+        printLogEvent(event);
+      }
     }
   }
 
@@ -29,6 +43,10 @@ export class Logs extends Command {
     }),
     last: Flags.string({
       description: '最近一段时间，例如 "1d"',
+    }),
+    level: Flags.string({
+      default: 'info',
+      description: '只显示指定 level 及以上的日志（debug、info、warn、error）',
     }),
   };
 }
