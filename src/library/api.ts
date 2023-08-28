@@ -1,6 +1,10 @@
 import {ReadableStream} from 'stream/web';
+import {setTimeout} from 'timers/promises';
 
 import type {Response} from 'undici';
+
+const MAX_ATTEMPTS = 3;
+const ATTEMPT_INTERVAL = 1000;
 
 export class API {
   constructor(
@@ -12,6 +16,36 @@ export class API {
     path: string,
     params: object,
     file?: ArrayBuffer | Blob | ReadableStream,
+  ): Promise<TReturn> {
+    return this.attemptToCall(path, params, file);
+  }
+
+  private async attemptToCall<TReturn extends object>(
+    path: string,
+    params: object,
+    file: ArrayBuffer | Blob | ReadableStream | undefined,
+    attempt = 1,
+  ): Promise<TReturn> {
+    try {
+      return await this.sendCall(path, params, file);
+    } catch (error) {
+      if (attempt >= MAX_ATTEMPTS || error instanceof APIError) {
+        throw error;
+      }
+
+      console.error(error);
+      console.error('请求失败，即将重试。');
+
+      await setTimeout(ATTEMPT_INTERVAL);
+
+      return this.attemptToCall(path, params, file, attempt + 1);
+    }
+  }
+
+  private async sendCall<TReturn extends object>(
+    path: string,
+    params: object,
+    file: ArrayBuffer | Blob | ReadableStream | undefined,
   ): Promise<TReturn> {
     const {endpoint, accessToken} = this;
 
@@ -48,7 +82,7 @@ export class API {
     const {status} = response;
 
     if (status !== 200) {
-      throw new Error(`状态码错误: ${status}`);
+      throw new StatusError(status, `状态码错误: ${status}`);
     }
 
     const ret = (await response.json()) as
@@ -59,11 +93,31 @@ export class API {
       const {
         error: {code, message},
       } = ret;
-      throw new Error(`${code}: ${message}`);
+      throw new APIError(code, `${code}: ${message}`);
     } else {
       const {value} = ret;
 
       return value;
     }
+  }
+}
+
+export class StatusError extends Error {
+  constructor(
+    readonly status: number,
+    message: string,
+  ) {
+    super(message);
+    this.name = new.target.name;
+  }
+}
+
+export class APIError extends Error {
+  constructor(
+    readonly code: string,
+    message: string,
+  ) {
+    super(message);
+    this.name = new.target.name;
   }
 }
