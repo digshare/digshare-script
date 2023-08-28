@@ -1,3 +1,4 @@
+import {randomUUID} from 'crypto';
 import {isGeneratorObject} from 'util/types';
 
 import type {ScriptUpdateMessage} from '@digshare/script/x';
@@ -142,6 +143,7 @@ export class Script<TState> {
         title,
         content,
         images: imageURLs,
+        clientId: randomUUID(),
       };
     }
 
@@ -171,4 +173,5 @@ export interface ScriptMessage {
   title: string | undefined;
   content: string;
   images: string[] | undefined;
+  clientId: string;
 }
