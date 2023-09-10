@@ -61,7 +61,7 @@ export class Deploy extends Command {
       }
     }
 
-    const {dss = {}} = require(Path.join(workingDir, 'package.json'));
+    const {dss = {}, homepage} = require(Path.join(workingDir, 'package.json'));
 
     const {schedule} = ScriptOptions.exact().satisfies(dss);
 
@@ -74,6 +74,7 @@ export class Deploy extends Command {
     await api.call<{revision: string}>('/v2/script/deploy', {
       debug,
       script: code,
+      homepage,
       schedule,
       resetState,
     });
