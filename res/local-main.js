@@ -84,7 +84,7 @@ async function scriptUpdate({message, state, ...unknown}) {
   if (state !== undefined) {
     console.info('更新状态', Path.relative(PROJECT_DIR, STATE_FILE_PATH));
 
-    await FS.writeFile(STATE_FILE_PATH, JSON.stringify(state));
+    await FS.writeFile(STATE_FILE_PATH, JSON.stringify(state, undefined, 2));
 
     anyEffect = true;
   }
