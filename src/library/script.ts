@@ -5,9 +5,15 @@ import type {ScriptUpdateMessage} from '@digshare/script/x';
 
 import {API} from './api';
 
+export interface ScriptResponse {
+  headers?: Record<string, string>;
+  body?: string;
+}
+
 export interface ScriptUpdate<TState> {
   message?: ScriptUpdateMessage | string;
   state?: TState;
+  response?: ScriptResponse | string;
 }
 
 export type ScriptProgram<TState> = (
@@ -16,13 +22,15 @@ export type ScriptProgram<TState> = (
   | ScriptUpdate<TState>
   | void
   | Promise<ScriptUpdate<TState> | void>
-  | Generator<ScriptUpdate<TState>, void, void>
-  | AsyncGenerator<ScriptUpdate<TState>, void, void>;
+  | Generator<ScriptUpdate<TState>, ScriptUpdate<TState> | void, void>
+  | AsyncGenerator<ScriptUpdate<TState>, ScriptUpdate<TState> | void, void>;
 
 export class Script<TState> {
   private api: API | undefined;
 
   private dryRun = false;
+
+  private response: ScriptResponse | undefined;
 
   constructor(readonly program: ScriptProgram<TState>) {}
 
@@ -35,7 +43,7 @@ export class Script<TState> {
     this.dryRun = dryRun;
   }
 
-  async run({state}: ScriptRunOptions<TState>): Promise<TState | void> {
+  async run({state}: ScriptRunOptions<TState>): Promise<ScriptResponse | void> {
     const {program} = this;
 
     const updates = program(state);
@@ -58,8 +66,22 @@ export class Script<TState> {
           ) => object is Generator | AsyncGenerator
         )(updates)
       ) {
-        for await (const update of updates) {
-          await this.update(update);
+        let result: IteratorResult<
+          ScriptUpdate<TState>,
+          ScriptUpdate<TState> | void
+        >;
+
+        // eslint-disable-next-line no-cond-assign
+        while ((result = await updates.next())) {
+          const {value: update, done} = result;
+
+          if (update) {
+            await this.update(update);
+          }
+
+          if (done) {
+            break;
+          }
         }
       } else {
         await this.update(updates);
@@ -67,11 +89,14 @@ export class Script<TState> {
     } else {
       throw new Error('无效的脚本返回值');
     }
+
+    return this.response;
   }
 
   private async update({
     message: updateMessage,
     state,
+    response,
   }: ScriptUpdate<TState>): Promise<void> {
     const {api, dryRun} = this;
 
@@ -83,12 +108,21 @@ export class Script<TState> {
       updateMessage = {content: updateMessage};
     }
 
+    if (typeof response === 'string') {
+      response = {body: response};
+    }
+
     if (updateMessage) {
       console.info('发布消息', updateMessage);
     }
 
     if (state !== undefined) {
       console.info('更新状态', state);
+    }
+
+    if (response) {
+      console.info('设置响应', response);
+      this.response = response;
     }
 
     if (dryRun) {

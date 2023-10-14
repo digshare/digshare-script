@@ -24,3 +24,10 @@ export const ScriptUpdateMessage = x.object({
 });
 
 export type ScriptUpdateMessage = x.TypeOf<typeof ScriptUpdateMessage>;
+
+export const ScriptResponse = x.object({
+  headers: x.record(x.string, x.string).optional(),
+  body: x.string.optional(),
+});
+
+export type ScriptResponse = x.TypeOf<typeof ScriptResponse>;

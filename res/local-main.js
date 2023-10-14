@@ -4,7 +4,7 @@ import * as FS from 'fs/promises';
 import * as Path from 'path';
 import {fileURLToPath} from 'url';
 
-import {ScriptUpdateMessage, x} from '@digshare/script/x';
+import {ScriptUpdateMessage, ScriptResponse} from '@digshare/script/x';
 import {isGeneratorObject} from 'util/types';
 
 const {resetState} = JSON.parse(process.argv[2]);
@@ -40,8 +40,19 @@ if (updates) {
         await scriptUpdate(update);
       }
     } else if (isGeneratorObject(updates)) {
-      for await (const update of updates) {
-        await scriptUpdate(update);
+      let result;
+
+      // eslint-disable-next-line no-cond-assign
+      while ((result = await updates.next())) {
+        const {value: update, done} = result;
+
+        if (update) {
+          await scriptUpdate(update);
+        }
+
+        if (done) {
+          break;
+        }
       }
     } else {
       await scriptUpdate(updates);
@@ -57,7 +68,7 @@ if (!anyEffect) {
 
 process.exit();
 
-async function scriptUpdate({message, state, ...unknown}) {
+async function scriptUpdate({message, state, response, ...unknown}) {
   const unknownKeys = Object.keys(unknown);
 
   if (unknownKeys.length > 0) {
@@ -68,15 +79,12 @@ async function scriptUpdate({message, state, ...unknown}) {
     }
   }
 
-  if (message) {
-    if (typeof message === 'string') {
-      message = {content: message};
-    }
+  if (typeof message === 'string') {
+    message = {content: message};
+  }
 
-    console.info(
-      '发布消息',
-      ScriptUpdateMessage.decode(x.extendedJSONValue, message),
-    );
+  if (message) {
+    console.info('发布消息', ScriptUpdateMessage.sanitize(message));
 
     anyEffect = true;
   }
@@ -87,5 +95,13 @@ async function scriptUpdate({message, state, ...unknown}) {
     await FS.writeFile(STATE_FILE_PATH, JSON.stringify(state, undefined, 2));
 
     anyEffect = true;
+  }
+
+  if (typeof response === 'string') {
+    response = {body: response};
+  }
+
+  if (response) {
+    console.info('设置响应', ScriptResponse.sanitize(response));
   }
 }
