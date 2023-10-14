@@ -8,6 +8,7 @@
     "license": "MIT",
     "author": "Chengdu Enverse Technology Co., Ltd.",
     "packageManager": "pnpm",
+    "type": "module",
     "projects": [
       {
         "name": "library",
