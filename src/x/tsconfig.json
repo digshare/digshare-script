@@ -2,8 +2,6 @@
   "extends": "@mufan/code/tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "module": "esnext",
-    "moduleResolution": "nodenext",
     "types": ["node"],
     "rootDir": ".",
     "outDir": "../../bld/x"

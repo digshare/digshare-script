@@ -9,12 +9,10 @@
   "exports": {
     ".": {
       "types": "./bld/library/index.d.ts",
-      "import": "./bld/library/index.js",
       "default": "./bld/library/index.js"
     },
     "./x": {
       "types": "./bld/x/index.d.ts",
-      "import": "./bld/x/index.js",
       "default": "./bld/x/index.js"
     }
   },
