@@ -1,6 +1,6 @@
 # @digshare/script
 
-Just another awesome magic.
+DigShare Script SDK
 
 ## License
 
