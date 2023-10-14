@@ -11,20 +11,22 @@
     "projects": [
       {
         "name": "library",
-        "module": ["cjs", "esm"],
+        "module": "esm",
         "references": ["x"]
       },
       {
         "name": "x",
         "type": "library",
-        "module": ["esm"]
+        "module": "esm"
       },
       {
         "name": "test",
+        "module": "esm",
         "references": ["library"]
       },
       {
         "name": "cli",
+        "module": "esm",
         "entrances": true
       }
     ]
