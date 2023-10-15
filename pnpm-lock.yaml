@@ -74,8 +74,8 @@ dependencies:
 
 devDependencies:
   '@mufan/eslint-plugin':
-    specifier: ^0.2.0
-    version: 0.2.0(eslint@8.51.0)(typescript@5.2.2)
+    specifier: ^0.2.4
+    version: 0.2.4(eslint@8.51.0)(typescript@5.2.2)
   '@types/node':
     specifier: ^20.5.0
     version: 20.5.0
@@ -222,8 +222,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: false
 
-  /@mufan/eslint-plugin@0.2.0(eslint@8.51.0)(typescript@5.2.2):
-    resolution: {integrity: sha512-+xtp8Iz+yz+3xthULbvQFd1cTNlUoRMb5znE5AftyM8KY7hpfcKLykEkOfD3SvtW+eGQRY3yHTXlRo9V1DH4eQ==}
+  /@mufan/eslint-plugin@0.2.4(eslint@8.51.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-d3kwV7Ipu5EruMQHgd4MM4tgoz9zk4DQX6kBedQQIVkiRlY7BnO2KOTbHsTZ+hCxY8VBf6PkK2z1baH0aOnqzA==}
     peerDependencies:
       eslint: '8'
       typescript: '5'
@@ -235,6 +235,7 @@ packages:
       eslint: 8.51.0
       eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@6.7.5)(eslint-plugin-import@2.28.1)(eslint@8.51.0)
       eslint-plugin-import: 2.28.1(@typescript-eslint/parser@6.7.5)(eslint-import-resolver-typescript@3.6.1)(eslint@8.51.0)
+      eslint-plugin-only-warn: 1.1.0
       tslib: 2.6.2
       typescript: 5.2.2
       x-value: 0.1.16
@@ -1305,6 +1306,11 @@ packages:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
       - supports-color
+    dev: true
+
+  /eslint-plugin-only-warn@1.1.0:
+    resolution: {integrity: sha512-2tktqUAT+Q3hCAU0iSf4xAN1k9zOpjK5WO8104mB0rT/dGhOa09582HN5HlbxNbPRZ0THV7nLGvzugcNOSjzfA==}
+    engines: {node: '>=6'}
     dev: true
 
   /eslint-scope@7.2.2:
