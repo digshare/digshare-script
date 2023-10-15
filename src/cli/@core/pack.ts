@@ -52,7 +52,6 @@ function ROLLUP({
       json(),
       minify && terser(),
     ],
-    treeshake: 'smallest',
   });
 }
 
