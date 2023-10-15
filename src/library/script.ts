@@ -1,9 +1,9 @@
 import {randomUUID} from 'crypto';
 import {isGeneratorObject} from 'util/types';
 
-import type {ScriptUpdateMessage} from '@digshare/script/x';
+import type {ScriptUpdateMessage} from '../x/index.js';
 
-import {API} from './api';
+import {API} from './api.js';
 
 export interface ScriptResponse {
   headers?: Record<string, string>;

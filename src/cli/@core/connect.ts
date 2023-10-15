@@ -3,7 +3,7 @@ import type * as Net from 'net';
 
 import open from 'open';
 
-import type {Entrances} from '../@entrances';
+import type {Entrances} from '../@entrances.js';
 
 export async function ensureAccessToken(entrances: Entrances): Promise<void> {
   const {api, config} = entrances;

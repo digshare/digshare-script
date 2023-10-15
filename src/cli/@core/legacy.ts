@@ -1,7 +1,7 @@
 import * as FS from 'fs/promises';
 import * as Path from 'path';
 
-import type {Entrances} from '../@entrances';
+import type {Entrances} from '../@entrances.js';
 
 export interface RetrieveLegacyOptions {
   out: string;

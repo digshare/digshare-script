@@ -2,8 +2,8 @@ import * as Path from 'path';
 
 import {Flags} from '@oclif/core';
 
-import {Command} from '../@command';
-import {pack} from '../@core';
+import {Command} from '../@command.js';
+import {pack} from '../@core/index.js';
 
 export class Pack extends Command {
   async run(): Promise<void> {

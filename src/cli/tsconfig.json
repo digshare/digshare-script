@@ -2,9 +2,14 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "types": ["node"],
     "experimentalDecorators": true,
     "rootDir": ".",
     "outDir": "../../bld/cli"
+  },
+  "ts-node": {
+    "esm": true
   }
 }

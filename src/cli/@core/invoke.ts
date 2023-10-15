@@ -1,7 +1,7 @@
-import type {Entrances} from '../@entrances';
-import {sleep} from '../@utils';
+import type {Entrances} from '../@entrances.js';
+import {sleep} from '../@utils.js';
 
-import {pollLogs, printLogEvent} from './log';
+import {pollLogs, printLogEvent} from './log.js';
 
 const INVOKE_POLL_LOGS_INTERVAL = 3000;
 

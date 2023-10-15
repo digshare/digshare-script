@@ -2,7 +2,7 @@ import * as Path from 'path';
 
 import {entrance} from 'entrance-decorator';
 
-import {API, Config} from './@core';
+import {API, Config} from './@core/index.js';
 
 export class Entrances {
   constructor(
@@ -10,7 +10,7 @@ export class Entrances {
     private projectDir: string | undefined,
   ) {}
 
-  /* eslint-disable @mufan/explicit-return-type */
+  /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
   @entrance
   get workingDir() {
@@ -32,5 +32,5 @@ export class Entrances {
     return new API(this.config);
   }
 
-  /* eslint-enable @mufan/explicit-return-type */
+  /* eslint-enable @typescript-eslint/explicit-function-return-type */
 }

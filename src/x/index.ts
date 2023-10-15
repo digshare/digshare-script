@@ -1,3 +1,3 @@
 export * as x from 'x-value';
 
-export * from './script';
+export * from './script.js';

@@ -2,8 +2,8 @@ import * as Path from 'path';
 
 import {Flags} from '@oclif/core';
 
-import {ensureAccessToken, retrieveLegacy} from '../@core';
-import {ProjectIndependentCommand} from '../@project-independent-command';
+import {ensureAccessToken, retrieveLegacy} from '../@core/index.js';
+import {ProjectIndependentCommand} from '../@project-independent-command.js';
 
 export class RetrieveLegacy extends ProjectIndependentCommand {
   async run(): Promise<void> {

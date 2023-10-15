@@ -3,9 +3,14 @@ import * as Path from 'path';
 import {Flags} from '@oclif/core';
 import prompts from 'prompts';
 
-import {Command} from '../@command';
-import {ScriptOptions, ensureAccessToken, invoke, pack} from '../@core';
-import {sleep} from '../@utils';
+import {Command} from '../@command.js';
+import {
+  ScriptOptions,
+  ensureAccessToken,
+  invoke,
+  pack,
+} from '../@core/index.js';
+import {sleep} from '../@utils.js';
 
 const DEPLOY_INVOKE_INTERVAL = 3000;
 

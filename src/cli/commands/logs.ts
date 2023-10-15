@@ -1,8 +1,8 @@
 import {Flags} from '@oclif/core';
 import ms from 'ms';
 
-import {Command} from '../@command';
-import {ensureAccessToken, pollLogs, printLogEvent} from '../@core';
+import {Command} from '../@command.js';
+import {ensureAccessToken, pollLogs, printLogEvent} from '../@core/index.js';
 
 export class Logs extends Command {
   async run(): Promise<void> {

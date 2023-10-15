@@ -2,9 +2,22 @@
   "root": true,
   "ignorePatterns": ["node_modules/", "/src/", "/bld/"],
   "extends": ["plugin:@mufan/javascript"],
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": true
+    }
+  },
   "overrides": [
     {
-      "files": "**/*.{js,jsx}"
+      "files": "**/*.{js,jsx}",
+      "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": "latest"
+      }
     },
     {
       "files": "**/*.cjs",

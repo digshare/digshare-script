@@ -1,7 +1,7 @@
 import Chalk from 'chalk';
 
-import type {Entrances} from '../@entrances';
-import {sleep} from '../@utils';
+import type {Entrances} from '../@entrances.js';
+import {sleep} from '../@utils.js';
 
 export const POLL_INTERVAL = 2000;
 

@@ -3,9 +3,9 @@
 import * as FS from 'fs/promises';
 import * as Path from 'path';
 import {fileURLToPath} from 'url';
+import {isGeneratorObject} from 'util/types';
 
 import {ScriptUpdateMessage, ScriptResponse} from '@digshare/script/x';
-import {isGeneratorObject} from 'util/types';
 
 const {resetState} = JSON.parse(process.argv[2]);
 

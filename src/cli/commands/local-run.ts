@@ -3,8 +3,8 @@ import * as Path from 'path';
 
 import {Flags} from '@oclif/core';
 
-import {Command} from '../@command';
-import {packLocal} from '../@core';
+import {Command} from '../@command.js';
+import {packLocal} from '../@core/index.js';
 
 export class LocalRun extends Command {
   async run(): Promise<void> {

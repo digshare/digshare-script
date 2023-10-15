@@ -1,3 +1,3 @@
-export * from './api';
-export * from './script';
-export * from './types';
+export * from './api.js';
+export * from './script.js';
+export * from './types.js';

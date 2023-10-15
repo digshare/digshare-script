@@ -1,5 +1,5 @@
-import {Command} from '../@command';
-import {connectScript} from '../@core';
+import {Command} from '../@command.js';
+import {connectScript} from '../@core/index.js';
 
 export class Connect extends Command {
   async run(): Promise<void> {

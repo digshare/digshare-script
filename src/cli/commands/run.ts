@@ -1,8 +1,8 @@
 import {Flags} from '@oclif/core';
 import prompts from 'prompts';
 
-import {Command} from '../@command';
-import {ensureAccessToken, invoke} from '../@core';
+import {Command} from '../@command.js';
+import {ensureAccessToken, invoke} from '../@core/index.js';
 
 export class Run extends Command {
   async run(): Promise<void> {

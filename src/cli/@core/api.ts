@@ -1,6 +1,6 @@
 import {fetch} from 'undici';
 
-import type {Config} from './config';
+import type {Config} from './config.js';
 
 export class API {
   constructor(readonly config: Config) {}

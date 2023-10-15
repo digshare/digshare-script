@@ -1,20 +1,26 @@
 import * as FS from 'fs/promises';
+import {createRequire} from 'module';
 import * as Path from 'path';
 
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import nodeResolve from '@rollup/plugin-node-resolve';
+import {nodeResolve} from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import virtual from '@rollup/plugin-virtual';
-import resolve from 'enhanced-resolve';
+import EnhancedResolve from 'enhanced-resolve';
 import findUp from 'find-up';
 import type {OutputOptions, RollupBuild} from 'rollup';
 import {rollup} from 'rollup';
 
+const require = createRequire(import.meta.url);
+
 const VIRTUAL_ENTRY_NAME = './__entry.js';
 
-const LOCAL_MAIN_FILE_PATH = Path.join(__dirname, '../../../res/local-main.js');
+const LOCAL_MAIN_FILE_PATH = new URL(
+  '../../../res/local-main.js',
+  import.meta.url,
+);
 
 function ROLLUP({
   tsconfig,
@@ -46,6 +52,7 @@ function ROLLUP({
       json(),
       minify && terser(),
     ],
+    treeshake: 'smallest',
   });
 }
 
@@ -116,16 +123,16 @@ ${mainFileContent}`,
 function getScriptModule(
   projectDir: string,
 ): [path: string, tsconfig: string | undefined] {
-  const {name: scriptPackageName} = require(Path.join(
-    projectDir,
-    'package.json',
-  )) as {name: string | undefined};
+  const {name: scriptPackageName} = require(
+    Path.join(projectDir, 'package.json'),
+  ) as {name: string | undefined};
 
   if (typeof scriptPackageName !== 'string') {
     throw new Error('项目 package.json 中未配置 name 字段。');
   }
 
-  const path = resolve.sync(projectDir, scriptPackageName) as string;
+  // eslint-disable-next-line import/no-named-as-default-member
+  const path = EnhancedResolve.sync(projectDir, scriptPackageName) as string;
 
   let tsconfig = getTSConfig(path);
 

@@ -2,7 +2,7 @@ import type {Config} from '@oclif/core';
 import {Command as OclifCommand} from '@oclif/core';
 import pkgDir from 'pkg-dir';
 
-import {Entrances} from './@entrances';
+import {Entrances} from './@entrances.js';
 
 export abstract class Command extends OclifCommand {
   protected entrances: Entrances;
