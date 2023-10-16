@@ -30,10 +30,14 @@ export class Deploy extends Command {
         debug,
         run,
         'dry-run': dryRun,
+        params: paramsJSON,
         'reset-state': resetState,
         force,
       },
     } = await this.parse(Deploy);
+
+    const params =
+      typeof paramsJSON === 'string' ? JSON.parse(paramsJSON) : undefined;
 
     await ensureAccessToken(entrances);
 
@@ -91,7 +95,8 @@ export class Deploy extends Command {
 
     if (run || dryRun) {
       await sleep(DEPLOY_INVOKE_INTERVAL);
-      await invoke(entrances, {debug, dryRun});
+
+      await invoke(entrances, {params, debug, dryRun});
     }
 
     this.exit();
@@ -106,6 +111,15 @@ export class Deploy extends Command {
     }),
     run: Flags.boolean(),
     'dry-run': Flags.boolean(),
+    params: Flags.string({
+      description: '脚本参数，请使用 JSON 格式编写。',
+      relationships: [
+        {
+          type: 'some',
+          flags: ['run', 'dry-run'],
+        },
+      ],
+    }),
     'reset-state': Flags.boolean(),
     force: Flags.boolean(),
   };

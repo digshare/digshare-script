@@ -9,8 +9,11 @@ export class Run extends Command {
     const {entrances} = this;
 
     const {
-      flags: {debug, 'dry-run': dryRun, force},
+      flags: {params: paramsJSON, debug, 'dry-run': dryRun, force},
     } = await this.parse(Run);
+
+    const params =
+      typeof paramsJSON === 'string' ? JSON.parse(paramsJSON) : undefined;
 
     await ensureAccessToken(entrances);
 
@@ -31,7 +34,7 @@ export class Run extends Command {
       }
     }
 
-    await invoke(entrances, {debug, dryRun});
+    await invoke(entrances, {params, debug, dryRun});
 
     this.exit();
   }
@@ -39,6 +42,9 @@ export class Run extends Command {
   static override description = '执行线上脚本。';
 
   static override flags = {
+    params: Flags.string({
+      description: '脚本执行参数，请使用 JSON 格式编写。',
+    }),
     debug: Flags.boolean({
       description: '触发部署到调试环境的脚本',
     }),

@@ -6,17 +6,19 @@ import {pollLogs, printLogEvent} from './log.js';
 const INVOKE_POLL_LOGS_INTERVAL = 3000;
 
 export interface InvokeOptions {
+  params: object | undefined;
   debug: boolean;
   dryRun: boolean;
 }
 
 export async function invoke(
   entrances: Entrances,
-  {debug, dryRun}: InvokeOptions,
+  {params, debug, dryRun}: InvokeOptions,
 ): Promise<void> {
   const {api} = entrances;
 
   const {id} = await api.call<{id: string}>('/v2/script/invoke', {
+    params,
     debug,
     dryRun,
   });
