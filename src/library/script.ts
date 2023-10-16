@@ -16,8 +16,9 @@ export interface ScriptUpdate<TState> {
   response?: ScriptResponse | string;
 }
 
-export type ScriptProgram<TState> = (
+export type ScriptProgram<TState, TParams extends object> = (
   state: TState | undefined,
+  context: {params: TParams},
 ) =>
   | ScriptUpdate<TState>
   | void
@@ -25,14 +26,14 @@ export type ScriptProgram<TState> = (
   | Generator<ScriptUpdate<TState>, ScriptUpdate<TState> | void, void>
   | AsyncGenerator<ScriptUpdate<TState>, ScriptUpdate<TState> | void, void>;
 
-export class Script<TState> {
+export class Script<TState, TParams extends object> {
   private api: API | undefined;
 
   private dryRun = false;
 
   private response: ScriptResponse | undefined;
 
-  constructor(readonly program: ScriptProgram<TState>) {}
+  constructor(readonly program: ScriptProgram<TState, TParams>) {}
 
   async configure({
     endpoint,
@@ -43,10 +44,13 @@ export class Script<TState> {
     this.dryRun = dryRun;
   }
 
-  async run({state}: ScriptRunOptions<TState>): Promise<ScriptResponse | void> {
+  async run({
+    state,
+    params,
+  }: ScriptRunOptions<TState, TParams>): Promise<ScriptResponse | void> {
     const {program} = this;
 
-    const updates = program(state);
+    const updates = program(state, {params});
 
     if (!updates) {
       return;
@@ -194,11 +198,15 @@ export interface ScriptConfigureOptions {
   dryRun: boolean;
 }
 
-export interface ScriptRunOptions<TState> {
+export interface ScriptRunOptions<TState, TParams extends object> {
   state: TState | undefined;
+  params: TParams;
 }
 
-export function script<TState>(program: ScriptProgram<TState>): Script<TState> {
+export function script<
+  TState,
+  TParams extends object = Record<string, unknown>,
+>(program: ScriptProgram<TState, TParams>): Script<TState, TParams> {
   return new Script(program);
 }
 
