@@ -1,8 +1,17 @@
 import {Errors, Flags} from '@oclif/core';
 
 export const Params = Flags.custom<Record<string, unknown>>({
-  description: '脚本执行参数（JSON 格式）。',
+  description: '脚本执行参数（JSON 或 URL 编码格式）。',
   parse(input) {
+    const peeking = input.match(/^[^]+(?==)/)?.[0];
+
+    if (
+      typeof peeking === 'string' &&
+      encodeURIComponent(peeking) === peeking
+    ) {
+      return Object.fromEntries(new URLSearchParams(input));
+    }
+
     try {
       const params = JSON.parse(input);
 
