@@ -11,6 +11,7 @@ import {
   invoke,
   pack,
 } from '../@core/index.js';
+import {Params} from '../@flags.js';
 import {sleep} from '../@utils.js';
 
 const require = createRequire(import.meta.url);
@@ -111,8 +112,7 @@ export class Deploy extends Command {
     }),
     run: Flags.boolean(),
     'dry-run': Flags.boolean(),
-    params: Flags.string({
-      description: '脚本参数，请使用 JSON 格式编写。',
+    params: Params({
       relationships: [
         {
           type: 'some',

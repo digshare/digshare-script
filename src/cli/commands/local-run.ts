@@ -5,6 +5,7 @@ import {Flags} from '@oclif/core';
 
 import {Command} from '../@command.js';
 import {packLocal} from '../@core/index.js';
+import {Params} from '../@flags.js';
 
 export class LocalRun extends Command {
   async run(): Promise<void> {
@@ -13,14 +14,14 @@ export class LocalRun extends Command {
     } = this;
 
     const {
-      flags: {out, 'reset-state': resetState},
+      flags: {params, 'reset-state': resetState, out},
     } = await this.parse(LocalRun);
 
     const outScript = await packLocal(workingDir, Path.join(workingDir, out));
 
     ChildProcess.spawn(
       process.argv[0],
-      [outScript, JSON.stringify({resetState})],
+      [outScript, JSON.stringify({params, resetState})],
       {stdio: 'inherit'},
     ).on('exit', code => process.exit(code ?? 0));
 
@@ -30,6 +31,7 @@ export class LocalRun extends Command {
   static override description = '在开发环境中执行脚本（不会实际发送消息）。';
 
   static override flags = {
+    params: Params(),
     'reset-state': Flags.boolean(),
     out: Flags.string({
       description: '指定本地脚本生成文件夹',

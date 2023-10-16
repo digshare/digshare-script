@@ -7,7 +7,7 @@ import {isGeneratorObject} from 'util/types';
 
 import {ScriptUpdateMessage, ScriptResponse} from '@digshare/script/x';
 
-const {resetState} = JSON.parse(process.argv[2]);
+const {params, resetState} = JSON.parse(process.argv[2]);
 
 const STATE_FILE_PATH = fileURLToPath(new URL('state.json', import.meta.url));
 
@@ -29,7 +29,7 @@ try {
 
 let anyEffect = false;
 
-const updates = program(state);
+const updates = program(state, {params});
 
 if (updates) {
   if (typeof updates === 'object') {
