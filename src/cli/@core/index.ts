@@ -6,3 +6,4 @@ export * from './connect.js';
 export * from './log.js';
 export * from './invoke.js';
 export * from './legacy.js';
+export * from './webhook.js';

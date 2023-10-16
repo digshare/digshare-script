@@ -1,3 +1,4 @@
+import {createRequire} from 'module';
 import * as Path from 'path';
 
 import {Flags} from '@oclif/core';
@@ -11,6 +12,8 @@ import {
   pack,
 } from '../@core/index.js';
 import {sleep} from '../@utils.js';
+
+const require = createRequire(import.meta.url);
 
 const DEPLOY_INVOKE_INTERVAL = 3000;
 
