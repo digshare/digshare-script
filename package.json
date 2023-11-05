@@ -1,6 +1,6 @@
 {
   "name": "@digshare/script",
-  "version": "0.4.14",
+  "version": "0.4.15",
   "description": "DigShare Script SDK",
   "repository": "https://github.com/digshare/digshare-script.git",
   "license": "MIT",
