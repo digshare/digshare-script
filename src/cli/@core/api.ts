@@ -1,5 +1,3 @@
-import {fetch} from 'undici';
-
 import type {Config} from './config.js';
 
 function POLL_INTERVAL(attempts: number): number {

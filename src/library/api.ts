@@ -1,8 +1,6 @@
 import {ReadableStream} from 'stream/web';
 import {setTimeout} from 'timers/promises';
 
-import type {Response} from 'undici';
-
 const MAX_ATTEMPTS = 3;
 const ATTEMPT_INTERVAL = 1000;
 
