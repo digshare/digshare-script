@@ -6,9 +6,7 @@ import type {Entrances} from '../@entrances.js';
 export async function ensureAccessToken(entrances: Entrances): Promise<void> {
   const {api, config} = entrances;
 
-  let {accessToken} = config;
-
-  if (accessToken) {
+  if (config.accessToken !== undefined) {
     try {
       await api.call('/v2/script/access', {});
     } catch (error) {
@@ -16,14 +14,14 @@ export async function ensureAccessToken(entrances: Entrances): Promise<void> {
         error instanceof Error &&
         /^(?:INVALID_ACCESS_TOKEN|PERMISSION_DENIED):/.test(error.message)
       ) {
-        accessToken = undefined;
+        config.setAccessToken(undefined);
       } else {
         throw error;
       }
     }
   }
 
-  if (!accessToken) {
+  if (config.accessToken === undefined) {
     await connectScript(entrances);
   }
 }

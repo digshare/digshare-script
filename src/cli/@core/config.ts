@@ -60,7 +60,7 @@ export class Config {
     };
   }
 
-  setAccessToken(accessToken: string): void {
+  setAccessToken(accessToken: string | undefined): void {
     this.accessToken = accessToken;
     this.localRaw.accessToken = accessToken;
 
