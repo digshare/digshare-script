@@ -9,7 +9,7 @@ import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import virtual from '@rollup/plugin-virtual';
 import EnhancedResolve from 'enhanced-resolve';
-import findUp from 'find-up';
+import {findUpSync} from 'find-up';
 import type {OutputOptions, RollupBuild} from 'rollup';
 import {rollup} from 'rollup';
 
@@ -145,5 +145,5 @@ function getScriptModule(
 }
 
 function getTSConfig(path: string): string | undefined {
-  return findUp.sync('tsconfig.json', {cwd: Path.dirname(path)});
+  return findUpSync('tsconfig.json', {cwd: Path.dirname(path)});
 }
