@@ -64,6 +64,9 @@
         },
         "license": {
           "type": "boolean"
+        },
+        "discord": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -102,7 +105,7 @@
           "$ref": "#/$defs/type-5"
         }
       ],
-      "description": "Defaults to 'library' if project name is 'library', otherwise 'program'."
+      "description": "Defaults to 'library' if project name includes 'library', otherwise 'program'."
     },
     "type-7": {
       "type": "object",
@@ -285,7 +288,7 @@
         },
         "dev": {
           "type": "boolean",
-          "description": "Whether this TypeScript project is a development-time project, defaults to true if the project name is 'test' or project type is 'script', otherwise false."
+          "description": "Whether this TypeScript project is a development-time project, defaults to true if the project name includes 'test' or project type is 'script', otherwise false."
         },
         "parentDir": {
           "$ref": "#/$defs/type-11"
@@ -299,6 +302,10 @@
         "noEmit": {
           "type": "boolean",
           "description": "Whether this project does not emit build artifact, defaults to true if `src` is false, otherwise false."
+        },
+        "test": {
+          "type": "boolean",
+          "description": "Whether this project is a test project, defaults to true if `name` includes 'test', otherwise false."
         },
         "entrances": {
           "$ref": "#/$defs/type-18"
@@ -451,7 +458,10 @@
     "type-32": {
       "type": "object",
       "required": [
-        "name"
+        "name",
+        "type",
+        "defaultBranch",
+        "packageManager"
       ],
       "properties": {
         "name": {

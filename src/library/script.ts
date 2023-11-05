@@ -5,16 +5,16 @@ import type {ScriptUpdateMessage} from '../x/index.js';
 
 import {API} from './api.js';
 
-export interface ScriptResponse {
+export type ScriptResponse = {
   headers?: Record<string, string>;
   body?: string;
-}
+};
 
-export interface ScriptUpdate<TState> {
+export type ScriptUpdate<TState> = {
   message?: ScriptUpdateMessage | string;
   state?: TState;
   response?: ScriptResponse | string;
-}
+};
 
 export type ScriptProgram<TState, TParams extends object> = (
   state: TState | undefined,
@@ -75,7 +75,6 @@ export class Script<TState, TParams extends object> {
           ScriptUpdate<TState> | void
         >;
 
-        // eslint-disable-next-line no-cond-assign
         while ((result = await updates.next())) {
           const {value: update, done} = result;
 
@@ -192,16 +191,16 @@ export class Script<TState, TParams extends object> {
   }
 }
 
-export interface ScriptConfigureOptions {
+export type ScriptConfigureOptions = {
   endpoint: string;
   accessToken: string;
   dryRun: boolean;
-}
+};
 
-export interface ScriptRunOptions<TState, TParams extends object> {
+export type ScriptRunOptions<TState, TParams extends object> = {
   state: TState | undefined;
   params: TParams;
-}
+};
 
 export function script<
   TState,
@@ -210,10 +209,10 @@ export function script<
   return new Script(program);
 }
 
-export interface ScriptMessage {
+export type ScriptMessage = {
   tags: string[] | undefined;
   title: string | undefined;
   content: string;
   images: string[] | undefined;
   clientId: string;
-}
+};

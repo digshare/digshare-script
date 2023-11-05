@@ -59,10 +59,10 @@ const BUILD_OPTIONS: OutputOptions = {
   inlineDynamicImports: true,
 };
 
-export interface PackOptions {
+export type PackOptions = {
   out?: string;
   minify?: boolean;
-}
+};
 
 export async function pack(
   projectDir: string,
@@ -130,7 +130,6 @@ function getScriptModule(
     throw new Error('项目 package.json 中未配置 name 字段。');
   }
 
-  // eslint-disable-next-line import/no-named-as-default-member
   const path = EnhancedResolve.sync(projectDir, scriptPackageName) as string;
 
   let tsconfig = getTSConfig(path);

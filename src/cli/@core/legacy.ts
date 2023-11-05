@@ -3,9 +3,9 @@ import * as Path from 'path';
 
 import type {Entrances} from '../@entrances.js';
 
-export interface RetrieveLegacyOptions {
+export type RetrieveLegacyOptions = {
   out: string;
-}
+};
 
 export async function retrieveLegacy(
   {api}: Entrances,

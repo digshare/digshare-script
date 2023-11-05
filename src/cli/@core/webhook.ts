@@ -1,9 +1,9 @@
 import type {Entrances} from '../@entrances.js';
 
-export interface GetWebhookOptions {
+export type GetWebhookOptions = {
   debug: boolean;
   reset: boolean;
-}
+};
 
 export async function getWebhook(
   entrances: Entrances,

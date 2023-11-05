@@ -5,7 +5,7 @@ import * as Path from 'path';
 import {fileURLToPath} from 'url';
 import {isGeneratorObject} from 'util/types';
 
-import {ScriptUpdateMessage, ScriptResponse} from '@digshare/script/x';
+import {ScriptResponse, ScriptUpdateMessage} from '@digshare/script/x';
 
 const {params, resetState} = JSON.parse(process.argv[2]);
 
@@ -42,7 +42,6 @@ if (updates) {
     } else if (isGeneratorObject(updates)) {
       let result;
 
-      // eslint-disable-next-line no-cond-assign
       while ((result = await updates.next())) {
         const {value: update, done} = result;
 

@@ -1,15 +1,15 @@
 import * as FS from 'fs';
 
-export interface GlobalConfigRaw {
+export type GlobalConfigRaw = {
   endpoints?: {
     api?: string;
     auth?: string;
   };
-}
+};
 
-export interface LocalConfigRaw extends GlobalConfigRaw {
+export type LocalConfigRaw = {
   accessToken?: string;
-}
+} & GlobalConfigRaw;
 
 export class Config {
   private globalRaw: GlobalConfigRaw;

@@ -5,17 +5,17 @@ import {sleep} from '../@utils.js';
 
 export const POLL_INTERVAL = 2000;
 
-export interface ScriptLogEvent {
+export type ScriptLogEvent = {
   invoke: string;
   level: 'runtime' | 'debug' | 'info' | 'warn' | 'error';
   timestamp: number;
   message: string;
-}
+};
 
-export interface PollLogsOptions {
+export type PollLogsOptions = {
   debug: boolean;
   startTime?: Date;
-}
+};
 
 export async function* pollLogs(
   {api}: Entrances,

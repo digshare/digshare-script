@@ -5,11 +5,11 @@ import {pollLogs, printLogEvent} from './log.js';
 
 const INVOKE_POLL_LOGS_INTERVAL = 3000;
 
-export interface InvokeOptions {
+export type InvokeOptions = {
   params: object | undefined;
   debug: boolean;
   dryRun: boolean;
-}
+};
 
 export async function invoke(
   entrances: Entrances,
